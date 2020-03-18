@@ -1,0 +1,137 @@
+library(ggplot2); theme_set(theme_bw())
+
+load("R_t_seoul_censor.rda")
+load("R_t_seoul_censor_detect.rda")
+load("R_t_seoul_censor_raw.rda")
+
+rt_censor <- R_t_seoul_censor %>%
+  bind_rows(.id="sim") %>%
+  group_by(date) %>%
+  summarize(
+    median=median(IRt, na.rm=TRUE),
+    lwr=quantile(IRt, 0.025, na.rm=TRUE),
+    upr=quantile(IRt, 0.975, na.rm=TRUE)
+  ) %>%
+  mutate(
+    group="adjusted for detection rate + number of tests"
+  )
+
+rt_censor_detect <- R_t_seoul_censor_detect %>%
+  bind_rows(.id="sim") %>%
+  group_by(date) %>%
+  summarize(
+    median=median(IRt, na.rm=TRUE),
+    lwr=quantile(IRt, 0.025, na.rm=TRUE),
+    upr=quantile(IRt, 0.975, na.rm=TRUE)
+  ) %>%
+  mutate(
+    group="adjusted for detection rate"
+  )
+
+rt_censor_raw <- R_t_seoul_censor_raw %>%
+  bind_rows(.id="sim") %>%
+  group_by(date) %>%
+  summarize(
+    median=median(IRt, na.rm=TRUE),
+    lwr=quantile(IRt, 0.025, na.rm=TRUE),
+    upr=quantile(IRt, 0.975, na.rm=TRUE)
+  ) %>%
+  mutate(
+    group="raw"
+  )
+
+rt_all <- bind_rows(rt_censor, rt_censor_detect, rt_censor_raw) %>%
+  mutate(
+    group=factor(group, level=c("raw",
+                                "adjusted for detection rate",
+                                "adjusted for detection rate + number of tests"))
+  )
+
+geo <- read_xlsx("data/COVID19-Korea-2020-03-13.xlsx", na="NA", sheet=3)
+
+geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] <- geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] + 1
+
+reconstruct_case <- reconstruct_censor %>%
+  bind_rows(.id="sim") %>%
+  group_by(date) %>%
+  summarize(
+    median=median(case),
+    lwr=quantile(case, 0.025),
+    upr=quantile(case, 0.975)
+  ) %>%
+  mutate(
+    group="adjusted for detection rate + number of tests"
+  )
+
+reconstruct_case_detect <- reconstruct_censor_detect %>%
+  bind_rows(.id="sim") %>%
+  group_by(date) %>%
+  summarize(
+    median=median(case),
+    lwr=quantile(case, 0.025),
+    upr=quantile(case, 0.975)
+  ) %>%
+  mutate(
+    group="adjusted for detection rate"
+  )
+
+reconstruct_case_raw <- reconstruct_censor_raw %>%
+  bind_rows(.id="sim") %>%
+  group_by(date) %>%
+  summarize(
+    median=median(case),
+    lwr=quantile(case, 0.025),
+    upr=quantile(case, 0.975)
+  ) %>%
+  mutate(
+    group="raw"
+  )
+
+reconstruct_case_all <- bind_rows(reconstruct_case, reconstruct_case_detect, reconstruct_case_raw) %>%
+  mutate(
+    group=factor(group, level=c("raw",
+                                "adjusted for detection rate",
+                                "adjusted for detection rate + number of tests"))
+  )
+
+g1 <- ggplot(geo) +
+  geom_bar(aes(as.Date(date_report)-0.5, Seoul), stat="identity", alpha=0.5) +
+  geom_ribbon(data=reconstruct_case_all, aes(date, ymin=lwr, ymax=upr, col=group, fill=group, lty=group), alpha=0.3) +
+  geom_line(data=reconstruct_case_all, aes(date, median, col=group, lty=group)) +
+  geom_vline(xintercept=as.Date("2020-03-10"), lty=2) +
+  scale_color_manual(values=c(1, 2, 4)) +
+  scale_fill_manual(values=c(1, 2, 4)) +
+  scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
+  scale_y_continuous("Reconstructed incidence", limits=c(0, 110), expand=c(0, 0),
+                     sec.axis = sec_axis(~ ., name = "Daily number of reported cases")) +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line(),
+    legend.position = c(0.31, 0.8),
+    legend.title = element_blank(),
+    plot.margin = margin(5, 5, 5, 20, unit="pt")
+  )
+
+g2 <- ggplot(mutate(rt_all, upr=ifelse(group=="raw", NA, upr))) +
+  geom_ribbon(aes(date, ymin=lwr, ymax=upr, col=group, fill=group), alpha=0.3) +
+  geom_line(aes(date, median, col=group, lty=group)) +
+  geom_hline(yintercept=1, lty=2) + 
+  geom_vline(xintercept=as.Date("2020-03-10"), lty=2) +
+  scale_color_manual(values=c(1, 2, 4)) +
+  scale_fill_manual(values=c(1, 2, 4)) +
+  scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
+  scale_y_continuous("Effective reproduction number", limits=c(0, 10), expand=c(0, 0),
+                     breaks=c(0, 2, 4, 6, 8)) +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line(),
+    legend.position = "none",
+    legend.title = element_blank(),
+    plot.margin = margin(5, 38, 5, 30, unit="pt")
+  )
+
+gseoul <- arrangeGrob(g1, g2, nrow=2)
+
+ggsave("figure_R_t_seoul.pdf", gseoul, width=6, height=5)
