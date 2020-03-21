@@ -13,7 +13,7 @@ for (i in 1:length(reconstruct_time_series_daegu_raw)) {
   meangen <- rgamma(1, 62, 62/5)
   size <- rgamma(1, 20, 20/5)
   
-  gen <- dnbinom(0:13, mu=meangen, size=size)
+  gen <- dnbinom(1:14, mu=meangen, size=size)
   gen <- gen/sum(gen)
   
   recondata <- rr %>%

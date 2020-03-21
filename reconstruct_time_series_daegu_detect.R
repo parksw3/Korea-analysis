@@ -79,7 +79,7 @@ estmean <- sapply(1:length(ee$b_Intercept), function(i) {
 geo <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3) %>%
   mutate(
     date_report=as.Date(date_report)
-  ) 
+  )
 
 geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] <- geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] + 1
 

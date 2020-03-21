@@ -1,10 +1,11 @@
 library(ggplot2); theme_set(theme_bw())
+library(gridExtra)
 
-load("R_t_seoul_censor.rda")
-load("R_t_seoul_censor_detect.rda")
-load("R_t_seoul_censor_raw.rda")
+load("R_t_gyeonggi_censor.rda")
+load("R_t_gyeonggi_censor_detect.rda")
+load("R_t_gyeonggi_censor_raw.rda")
 
-rt_censor <- R_t_seoul_censor %>%
+rt_censor <- R_t_gyeonggi_censor %>%
   bind_rows(.id="sim") %>%
   group_by(date) %>%
   summarize(
@@ -16,7 +17,7 @@ rt_censor <- R_t_seoul_censor %>%
     group="adjusted for detection rate + number of tests"
   )
 
-rt_censor_detect <- R_t_seoul_censor_detect %>%
+rt_censor_detect <- R_t_gyeonggi_censor_detect %>%
   bind_rows(.id="sim") %>%
   group_by(date) %>%
   summarize(
@@ -28,7 +29,7 @@ rt_censor_detect <- R_t_seoul_censor_detect %>%
     group="adjusted for detection rate"
   )
 
-rt_censor_raw <- R_t_seoul_censor_raw %>%
+rt_censor_raw <- R_t_gyeonggi_censor_raw %>%
   bind_rows(.id="sim") %>%
   group_by(date) %>%
   summarize(
@@ -95,15 +96,15 @@ reconstruct_case_all <- bind_rows(reconstruct_case, reconstruct_case_detect, rec
   )
 
 g1 <- ggplot(geo) +
-  geom_bar(aes(as.Date(date_report)-0.5, Seoul), stat="identity", alpha=0.5) +
+  geom_bar(aes(as.Date(date_report)-0.5, `Gyeonggi-do`), stat="identity", alpha=0.5) +
+  geom_vline(xintercept=as.Date("2020-03-10"), lty=2) +
   geom_ribbon(data=reconstruct_case_all, aes(date, ymin=lwr, ymax=upr, col=group, fill=group, lty=group), alpha=0.3) +
   geom_line(data=reconstruct_case_all, aes(date, median, col=group, lty=group)) +
-  geom_vline(xintercept=as.Date("2020-03-10"), lty=2) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
-  scale_y_continuous("Reconstructed incidence", limits=c(0, 110), expand=c(0, 0),
-                     sec.axis = sec_axis(~ ., name = "Daily number of reported cases")) +
+  scale_y_continuous("Reconstructed incidence", limits=c(0, 80), expand=c(0, 0),
+                     sec.axis = sec_axis(~ .*1, name = "Daily number of reported cases")) +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
@@ -121,17 +122,16 @@ g2 <- ggplot(rt_all) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 10), expand=c(0, 0),
-                     breaks=c(0, 2, 4, 6, 8)) +
+  scale_y_continuous("Effective reproduction number", limits=c(0, 13), expand=c(0, 0)) +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.line = element_line(),
     legend.position = "none",
     legend.title = element_blank(),
-    plot.margin = margin(5, 38, 5, 30, unit="pt")
+    plot.margin = margin(5, 39, 5, 29, unit="pt")
   )
 
-gseoul <- arrangeGrob(g1, g2, nrow=2)
+gtot <- arrangeGrob(g1, g2, nrow=2)
 
-ggsave("figure_R_t_seoul.pdf", gseoul, width=6, height=5)
+ggsave("figure_R_t_gyeonggi.pdf", gtot, width=6, height=5)

@@ -5,6 +5,7 @@ library(lubridate)
 library(brms)
 library(rstan)
 
+load("test_weight.rda")
 load("report_delay_backward.rda")
 
 covid_line <- read_xlsx("data/COVID19-Korea-2020-03-13.xlsx", na="NA") %>%
@@ -82,14 +83,14 @@ geo <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3) %>%
 
 geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] <- geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] + 1
 
-seoul <- geo %>% group_by(date_report) %>%
+gyeonggi <- geo %>% group_by(date_report) %>%
   summarize(
-    cases=sum(Seoul, na.rm=TRUE)
+    cases=sum(`Gyeonggi-do`, na.rm=TRUE)
   )
 
-cases <- filter(seoul, date_report <= as.Date("2020-03-16"))$cases
+cases <- filter(gyeonggi, date_report <= as.Date("2020-03-16"))$cases
 
-reconstruct_time_series_seoul_raw <- vector('list', length(ee$b_Intercept))
+reconstruct_time_series_gyeonggi_raw <- vector('list', length(ee$b_Intercept))
 
 set.seed(101)
 for (i in 1:length(ee$b_Intercept)) {
@@ -105,14 +106,14 @@ for (i in 1:length(ee$b_Intercept)) {
   meandelay <- estmean[,i]
   shape <- ee$shape[i]
   
-  reconstruct_time_series_seoul_raw[[i]] <- sapply(1:length(cases), function(x) {
+  reconstruct_time_series_gyeonggi_raw[[i]] <- sapply(1:length(cases), function(x) {
     data_frame(
       confirm=as.Date("2020-01-20")+x-1,
-      onset=confirm-rnbinom(cases[x], mu=meandelay[x], size=shape),
-      infection=onset-floor(rgamma(cases[x], shape=shape, rate=shape/meaninc))
+      onset=confirm-rnbinom(round(cases[x]), mu=meandelay[x], size=shape),
+      infection=onset-floor(rgamma(round(cases[x]), shape=shape, rate=shape/meaninc))
     )
   }, simplify = FALSE) %>%
     bind_rows
 }
 
-save("reconstruct_time_series_seoul_raw", file="reconstruct_time_series_seoul_raw.rda")
+save("reconstruct_time_series_gyeonggi_raw", file="reconstruct_time_series_gyeonggi_raw.rda")

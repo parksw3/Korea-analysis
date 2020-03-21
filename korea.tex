@@ -52,38 +52,46 @@
 \begin{flushleft}{
 	\Large
 	\textbf\newline{
-		Estimating the effects of social distancing on preventing the spread of coronavirus disease 2019 (COVID-19) in South Korea
+		Potential roles of social distancing in preventing the spread of coronavirus disease 2019 (COVID-19) in South Korea
 	}
 }
 \end{flushleft}
 
 \pagebreak
 
-Here, we use traffic data to compare and contrast the potential role of social distancing in preventing the spread of COVID-19 in two geographically separated major cities in South Korea.
+Since its appearance in December 2019, the novel coronavirus disease (COVID-19) has spread internationally, including to South Korea.
+The first COVID-19 case in South Korea was confirmed on January 20, 2020, from a traveling resident of Wuhan, China.
+The epidemic took off in mid-February when COVID-19 began to spread within a church from a city of Daegu --- as of March 18, 2020, 8,413 cases have been confirmed, of which 60\% are linked to the church.
+Despite the lack of draconian measures such as in China, the epidemic has been subsiding in South Korea.
+Its success in controlling the spread has been widely attributed to its intensive testing.
+Here, we describe potential roles of social distancing in mitigating the spread of COVID-19 by comparing epidemics in two geographically separated major cities in South Korea.
 
 \section{Data description}
 
-Here, we analyze epidemiological data, collected bewteen January 20--March 16, 2020, describing the COVID-19 outbreak in Korea.
-Daily number of reported cases in each geographic region was transcribed from press releases by Korea Centers for Disease Control and Prevention (KCDC).
+We analyze epidemiological data, collected bewteen January 20--March 16, 2020, describing the COVID-19 outbreak in Korea.
+Daily number of reported cases in each geographic region was transcribed from press releases by \cite{kcdc}.
 Partial line lists were transcribed from press releases and reports from KCDC and various local and provincial government websites.
-All data and original reports are stored in a publicly available GitHub repoository: https://github.com/parksw3/COVID19-Korea.
+All data, sources, and original reports are stored in a publicly available GitHub repoository: \url{https://github.com/parksw3/COVID19-Korea}.
 
 \begin{figure}[!h]
 \includegraphics[width=\textwidth]{figure_compare_report.pdf}
 \caption{
 \textbf{Comparison of epidemiological and traffic data from Daegu and Seoul.}
-Solid lines represent the daily metro traffic volume in 2020 (red) and in 2017--2019 (gray).
-Black lines represent the average daily metro traffic volume in previous years.
+Red lines represent the daily metro traffic volume in 2020.
+Black lines represent the average daily metro traffic volume in previous years, 2017--2019.
+Daily traffic from previous years have been shifted by 1--3 days to align day of the week.
 }
 \label{fig:data}
 \end{figure}
 
-We focus our analysis on two cities in which the biggest number of COVID-19 cases have been reported: Daegu and Seoul.
+We compare epidemiological dynamics of COVID-19 from two cities in which the biggest number of COVID-19 cases have been reported: Daegu and Seoul.
+% population size: 2.4 and 9.7 million \citep{kosis}.
 Bewteen January 20--March 16, 2020, 6,083 cases were reported from Daegu and 248 from Seoul.
-Need one or two sentences about epidemic.
+Unlike the epidemic in Daegu, which is characterized by a single, large peak followed by a persistent decrease, the epidemic in Seoul consists of several small outbreaks (\fref{data}).
 
-Daily metro traffic from Daegu and Seoul were obtained from their corresponding government websites.
-Need one or two sentences about metro. 
+Daily metro traffic in Daegu and Seoul between 2017--2020 was obtained from their corresponding government websites.
+
+\fref{data}
 About 80\% decrease in Daegu and 50\% decrease in Seoul after the identification of the church-related case.
 
 %% https://www.data.go.kr/dataset/15002503/fileData.do
@@ -91,7 +99,7 @@ About 80\% decrease in Daegu and 50\% decrease in Seoul after the identification
 
 \section{Effective reproduction number}
 
-We first estimate the time-varying effective reproduction number $R_t$ for both epidemics.
+We estimate the time-varying effective reproduction number $R_t$ for both epidemics.
 We account for changes in case definition by scaling the number of reported cases by the relative detection rate (i.e., a proportion of cases tested positive based a case definition divided by the mean detection rate among case definitions); 
 using a narrow case definition is more likely to have a higher detection rate and a lower reporting rate than a wide one.
 Likewise, we account for changes in the number of tests by scaling the number of reported cases again by the relative number of tests performed on each day; this step is performed separately for each case definition because the widening of a case definition necessarily increases the number of tests.
@@ -119,7 +127,7 @@ Similar patterns in $R_t$ can be found in adjacent provinces -- a sharp decrease
 \begin{figure}[!ht]
 \includegraphics[width=\textwidth]{figure_traffic_regression.pdf}
 \caption{
-\textbf{Relationship between daily traffic volume and effective reproduction number.}
+\textbf{Other effects.}
 }
 \label{fig:traffic}
 \end{figure}
@@ -147,6 +155,8 @@ Caveats:
 
 \pagebreak
 
+\bibliography{korea}
+
 \section{Supplementary Materials}
 
 \begin{figure}[!ht]
@@ -154,7 +164,6 @@ Caveats:
 \caption{
 \textbf{Comparison of effective reproduction number in Daegu, Seoul, Gyeongsangbuk-do, and Gyeonggi-do.}
 }
-\label{fig:eff}
 \end{figure}
 
 \end{document}

@@ -1,3 +1,4 @@
+library(readxl)
 library(ggplot2); theme_set(theme_bw())
 library(gridExtra)
 
@@ -122,7 +123,7 @@ g2 <- ggplot(rt_all) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 8.5), expand=c(0, 0)) +
+  scale_y_continuous("Effective reproduction number", limits=c(0, 6.5), expand=c(0, 0)) +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),

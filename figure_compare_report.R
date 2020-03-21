@@ -1,5 +1,10 @@
+library(dplyr)
+library(tidyr)
+library(readxl)
 library(ggplot2); theme_set(theme_bw())
 library(gridExtra)
+library(lubridate)
+library(raster)
 
 geo <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3) %>%
   mutate(
@@ -101,15 +106,14 @@ traffic_seoul_all <- data.frame(
   year=factor(rep(c(2017, 2018, 2019, 2020), each=51))
 )
 
-g1 <- ggplot(traffic_daegu_all) +
+g1 <- ggplot(filter(traffic_daegu_all, year==2020)) +
   geom_bar(data=daegu, aes(date_report, cases), stat="identity", alpha=0.5) + 
-  geom_line(aes(date, traffic/3e2, group=year, col=year, lwd=factor(year))) +
   geom_line(aes(date, mean/3e2), lwd=1) +
+  geom_line(aes(date, traffic/3e2, group=year, col=year), lwd=1) +
   scale_x_date("Date", expand=c(0, 0)) +
   scale_y_continuous("Daily number of reported cases",
                      sec.axis = sec_axis(~ .*3e2, name = "Daily traffic volume, 2020"), expand=c(0, 0)) +
-  scale_color_manual(values=c("gray", "gray", "gray", "red")) +
-  scale_size_manual(values=c(0.7, 0.7, 0.7, 1)) +
+  scale_color_manual(values=c("red")) +
   ggtitle("A. Daegu") +
   theme(
     panel.grid = element_blank(),
@@ -123,15 +127,14 @@ g1 <- ggplot(traffic_daegu_all) +
     axis.text.y.right = element_text(color="red")
   )
 
-g2 <- ggplot(traffic_seoul_all) +
+g2 <- ggplot(filter(traffic_seoul_all, year==2020)) +
   geom_bar(data=seoul, aes(date_report, cases), stat="identity", alpha=0.5) + 
-  geom_line(aes(date, traffic/1e5, group=year, col=year, lwd=factor(year))) +
   geom_line(aes(date, mean/1e5), lwd=1) +
+  geom_line(aes(date, traffic/1e5, group=year, col=year), lwd=1) +
   scale_x_date("Date", expand=c(0, 0)) +
   scale_y_continuous("Daily number of reported cases",
                      sec.axis = sec_axis(~ .*1e5, name = "Daily traffic volume, 2020", breaks=c(0, 2e6, 4e6, 6e6, 8e6)), expand=c(0, 0)) +
-  scale_color_manual(values=c("gray", "gray", "gray", "red")) +
-  scale_size_manual(values=c(0.7, 0.7, 0.7, 1)) +
+  scale_color_manual(values=c("red")) +
   ggtitle("B. Seoul") +
   theme(
     panel.grid = element_blank(),
