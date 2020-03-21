@@ -28,7 +28,7 @@ seoul <- geo %>%
 load("traffic_daegu.rda")
 load("traffic_seoul.rda")
 
-traffic_daegu1 <- select(ungroup(filter(traffic_daegu,year==2017)), -월, -일) %>%
+traffic_daegu1 <- dplyr::select(ungroup(filter(traffic_daegu,year==2017)), -월, -일) %>%
   mutate(
     wday=wday(date)
   ) %>%
@@ -36,7 +36,7 @@ traffic_daegu1 <- select(ungroup(filter(traffic_daegu,year==2017)), -월, -일) 
     date >= as.Date("2017-01-20")+3, date <= as.Date("2017-03-01")+3
   )
 
-traffic_daegu2 <- select(ungroup(filter(traffic_daegu,year==2018)), -월, -일) %>%
+traffic_daegu2 <- dplyr::select(ungroup(filter(traffic_daegu,year==2018)), -월, -일) %>%
   mutate(
     wday=wday(date)
   ) %>%
@@ -44,7 +44,7 @@ traffic_daegu2 <- select(ungroup(filter(traffic_daegu,year==2018)), -월, -일) 
     date >= as.Date("2018-01-20")+2, date <= as.Date("2018-03-01")+2
   )
 
-traffic_daegu3 <- select(ungroup(filter(traffic_daegu,year==2019)), -월, -일) %>%
+traffic_daegu3 <- dplyr::select(ungroup(filter(traffic_daegu,year==2019)), -월, -일) %>%
   mutate(
     wday=wday(date)
   ) %>%
@@ -52,7 +52,7 @@ traffic_daegu3 <- select(ungroup(filter(traffic_daegu,year==2019)), -월, -일) 
     date >= as.Date("2019-01-20")+1, date <= as.Date("2019-03-01")+1
   )
 
-traffic_daegu4 <- select(ungroup(filter(traffic_daegu,year==2020)), -월, -일) %>%
+traffic_daegu4 <- dplyr::select(ungroup(filter(traffic_daegu,year==2020)), -월, -일) %>%
   mutate(
     wday=wday(date)
   ) %>%
@@ -110,6 +110,7 @@ g1 <- ggplot(filter(traffic_daegu_all, year==2020)) +
   geom_bar(data=daegu, aes(date_report, cases), stat="identity", alpha=0.5) + 
   geom_line(aes(date, mean/3e2), lwd=1) +
   geom_line(aes(date, traffic/3e2, group=year, col=year), lwd=1) +
+  geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
   scale_x_date("Date", expand=c(0, 0)) +
   scale_y_continuous("Daily number of reported cases",
                      sec.axis = sec_axis(~ .*3e2, name = "Daily traffic volume, 2020"), expand=c(0, 0)) +
@@ -131,6 +132,7 @@ g2 <- ggplot(filter(traffic_seoul_all, year==2020)) +
   geom_bar(data=seoul, aes(date_report, cases), stat="identity", alpha=0.5) + 
   geom_line(aes(date, mean/1e5), lwd=1) +
   geom_line(aes(date, traffic/1e5, group=year, col=year), lwd=1) +
+  geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
   scale_x_date("Date", expand=c(0, 0)) +
   scale_y_continuous("Daily number of reported cases",
                      sec.axis = sec_axis(~ .*1e5, name = "Daily traffic volume, 2020", breaks=c(0, 2e6, 4e6, 6e6, 8e6)), expand=c(0, 0)) +
