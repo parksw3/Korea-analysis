@@ -1,4 +1,4 @@
-## 
+## parksw3: Korea-analysis.git
 
 current: target
 -include target.mk
@@ -7,6 +7,9 @@ current: target
 
 ######################################################################
 
+korea.pdf: korea.tex
+
+######################################################################
 
 ### Makestuff
 
