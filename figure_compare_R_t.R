@@ -29,7 +29,7 @@ seoul <- geo %>%
     cases=sum(Seoul, na.rm=TRUE)
   )
 
-traffic_daegu1 <- select(ungroup(filter(traffic_daegu,year==2017)), -월, -일) %>%
+traffic_daegu1 <- dplyr::select(ungroup(filter(traffic_daegu,year==2017)), -월, -일) %>%
   mutate(
     wday=wday(date)
   ) %>%
@@ -37,7 +37,7 @@ traffic_daegu1 <- select(ungroup(filter(traffic_daegu,year==2017)), -월, -일) 
     date >= as.Date("2017-01-20")+3, date <= as.Date("2017-03-01")+3
   )
 
-traffic_daegu2 <- select(ungroup(filter(traffic_daegu,year==2018)), -월, -일) %>%
+traffic_daegu2 <- dplyr::select(ungroup(filter(traffic_daegu,year==2018)), -월, -일) %>%
   mutate(
     wday=wday(date)
   ) %>%
@@ -45,7 +45,7 @@ traffic_daegu2 <- select(ungroup(filter(traffic_daegu,year==2018)), -월, -일) 
     date >= as.Date("2018-01-20")+2, date <= as.Date("2018-03-01")+2
   )
 
-traffic_daegu3 <- select(ungroup(filter(traffic_daegu,year==2019)), -월, -일) %>%
+traffic_daegu3 <- dplyr::select(ungroup(filter(traffic_daegu,year==2019)), -월, -일) %>%
   mutate(
     wday=wday(date)
   ) %>%
@@ -53,7 +53,7 @@ traffic_daegu3 <- select(ungroup(filter(traffic_daegu,year==2019)), -월, -일) 
     date >= as.Date("2019-01-20")+1, date <= as.Date("2019-03-01")+1
   )
 
-traffic_daegu4 <- select(ungroup(filter(traffic_daegu,year==2020)), -월, -일) %>%
+traffic_daegu4 <- dplyr::select(ungroup(filter(traffic_daegu,year==2020)), -월, -일) %>%
   mutate(
     wday=wday(date)
   ) %>%

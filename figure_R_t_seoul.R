@@ -1,4 +1,5 @@
 library(ggplot2); theme_set(theme_bw())
+library(gridExtra)
 
 load("R_t_seoul_censor.rda")
 load("R_t_seoul_censor_detect.rda")
@@ -47,7 +48,7 @@ rt_all <- bind_rows(rt_censor, rt_censor_detect, rt_censor_raw) %>%
                                 "adjusted for detection rate + number of tests"))
   )
 
-geo <- read_xlsx("data/COVID19-Korea-2020-03-13.xlsx", na="NA", sheet=3)
+geo <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3)
 
 geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] <- geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] + 1
 
