@@ -96,4 +96,3 @@ g2 <- ggplot(seoul) +
 gtot <- arrangeGrob(g1, g2, nrow=2)
 
 ggsave("figure_adjusted_timeseries.pdf", gtot, width=8, height=6)
-

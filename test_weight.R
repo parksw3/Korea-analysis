@@ -1,4 +1,6 @@
+library(dplyr)
 library(readxl)
+library(lubridate)
 
 tt <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=2)
 

@@ -7,7 +7,7 @@ library(rstan)
 
 load("report_delay_backward.rda")
 
-covid_line <- read_xlsx("data/COVID19-Korea-2020-03-13.xlsx", na="NA") %>%
+covid_line <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA") %>%
   mutate(
     age=as.numeric(age),
     date_onset=as.Date(date_onset)
