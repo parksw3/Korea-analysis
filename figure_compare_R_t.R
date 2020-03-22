@@ -1,10 +1,33 @@
 library(ggplot2); theme_set(theme_bw())
 library(gridExtra)
+library(lubridate)
+library(dplyr)
+library(tidyr)
+library(readxl)
 
 load("R_t_daegu_censor.rda")
 load("R_t_seoul_censor.rda")
 load("traffic_daegu.rda")
 load("traffic_seoul.rda")
+
+geo <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3) %>%
+  mutate(
+    date_report=as.Date(date_report)
+  ) 
+
+geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] <- geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] + 1
+
+daegu <- geo %>% 
+  group_by(date_report) %>%
+  summarize(
+    cases=sum(Daegu, na.rm=TRUE)
+  )
+
+seoul <- geo %>% 
+  group_by(date_report) %>%
+  summarize(
+    cases=sum(Seoul, na.rm=TRUE)
+  )
 
 traffic_daegu1 <- select(ungroup(filter(traffic_daegu,year==2017)), -월, -일) %>%
   mutate(
@@ -101,12 +124,13 @@ seoul_traffic <- data.frame(
 )
 
 g1 <- ggplot(rt_daegu) +
-  geom_bar(data=daegu, aes(date_report, cases/max(daegu$cases)), stat="identity", alpha=0.5) + 
+  geom_bar(data=daegu, aes(date_report, cases/max(daegu$cases)), stat="identity", alpha=0.3) + 
   geom_hline(yintercept=6, lty=2, col=2) + 
-  geom_line(data=daegu_traffic, aes(date, traffic*6), col=2, lwd=1) +
+  geom_line(data=daegu_traffic, aes(date, traffic*6), col=2) +
   geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
-  geom_line(aes(date, median)) +
+  geom_line(aes(date, median), lwd=1) +
   geom_hline(yintercept=1, lty=2) + 
+  geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
@@ -126,12 +150,13 @@ g1 <- ggplot(rt_daegu) +
   )
 
 g2 <- ggplot(rt_seoul) +
-  geom_bar(data=seoul, aes(date_report, cases/12), stat="identity", alpha=0.5) + 
+  geom_bar(data=seoul, aes(date_report, cases/12), stat="identity", alpha=0.3) + 
   geom_hline(yintercept=6, lty=2, col=2) + 
-  geom_line(data=seoul_traffic, aes(date, traffic*6), col=2, lwd=1) +
+  geom_line(data=seoul_traffic, aes(date, traffic*6), col=2) +
   geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
-  geom_line(aes(date, median)) +
+  geom_line(aes(date, median), lwd=1) +
   geom_hline(yintercept=1, lty=2) + 
+  geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
   ggtitle("B. Seoul") +
   scale_y_continuous("Effective reproduction number", limits=c(0, 8.5), expand=c(0, 0),
