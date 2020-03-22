@@ -86,13 +86,13 @@ Bryan T.\ Grenfell\textsuperscript{1,2,6}
 
 Since its first appearance in Wuhan, China, in December 2019 \citep{pneumonia}, the novel coronavirus disease (COVID-19) has spread internationally, including to South Korea.
 The first COVID-19 case in South Korea was confirmed on January 20, 2020, from a traveling resident of Wuhan, China \citep{kcdc}.
-The epidemic then took off in mid-February when COVID-19 began to spread within a church from a city of Daegu --- as of March 18, 2020, 8,413 cases have been confirmed, of which 60\% are related to the church \citep{kcdc}.
-While its success in suppressing the epidemic has been widely attributed to its intensive testing \citep{fergusonimpact, science}, other factors, such as social distancing, are also likely to have played important roles.
+The epidemic then took off in mid-February when COVID-19 began to spread within a church in the city of Daegu --- as of March 18, 2020, 8,413 cases were confirmed, of which 60\% were related to the church \citep{kcdc}.
+While Korea's success in suppressing the epidemic has been widely attributed to intensive testing \citep{fergusonimpact, science}, other factors, such as social distancing, are also likely to have played important roles.
 Here, we describe potential roles of social distancing in mitigating the spread of COVID-19 by using metro traffic data to compare epidemics in two geographically separated major cities in South Korea.
 
 \section{Data description}
 
-We analyzed epidemiological data, collected bewteen January 20--March 16, 2020, describing the COVID-19 outbreak in South Korea.
+We analyzed epidemiological data, collected between January 20--March 16, 2020, describing the COVID-19 outbreak in South Korea.
 Daily number of reported cases in each geographic region was transcribed from press releases by Korea Centers for Disease Control and Prevention (KCDC) \cite{kcdc}.
 Partial line lists were transcribed from press releases from KCDC and various local and provincial governments.
 All data and original reports are stored in a publicly available GitHub repository: \url{https://github.com/parksw3/COVID19-Korea}.
@@ -113,8 +113,8 @@ Between January 20--March 16, 2020, 6,083 cases were reported from Daegu and 248
 Unlike the epidemic in Daegu, which is characterized by a single, large peak followed by a gradual decrease, the epidemic in Seoul consists of several small outbreaks (\fref{data}).
 
 Daily metro traffic in Daegu and Seoul between 2017--2020 was obtained from \url{data.go.kr} and \url{data.seoul.go.kr}, respectively.
-We compared the the daily number of individuals who got on the subway --- including a monorail in Daegu --- across all stations (\fref{data}).
-Soon after the first church-related case was confirmed in Daegu on Feb 18, 2020, the daily traffic volume decreased by about 80\% and 50\% compared to previous years in Daegu and Seoul, respectively.
+We tabulated the total number of individuals who got on the subway or monorail (\fref{data}).
+Soon after the first church-related case was confirmed in Daegu on Feb 18, 2020, the daily traffic volume decreased by about 80\% and 50\% in Daegu and Seoul, respectively. \jd{Cut a lot of words here; I think it's fine, but see wyt.}
 
 %% https://www.data.go.kr/dataset/15002503/fileData.do
 %% https://data.seoul.go.kr/dataList/OA-12914/S/1/datasetView.do
@@ -132,10 +132,15 @@ Black lines and gray ribbons represent the median estimates of the mean delays a
 \label{fig:dist}
 \end{figure}
 
+We are assuming that during the early period of an epidemic if we follow a consistent protocol of identifying and deciding whom to test, the positivity should stay about the same and that's the justification for the first correction.
+
+\jd{Flow needs to be cleaned up here, but I'm not letting myself take the time.}
 In order to estimate the time-dependent reproduction number $R_t$ (i.e., the expected number of secondary cases caused by an individual infected at time $t$ \citep{fraser2007estimating}), 
 we first accounted for changes in testing criteria (\fref{dist}B) by multiplying the daily number of reported cases by the relative detection rate for each criterion (i.e., a proportion of cases tested positive based on a criterion divided by the mean detection rate).
+\jd{What do you mean by detection rate?}
 Likewise, we accounted for changes in the number of tests completed on each day (\fref{dist}A) by dividing the scaled number of reported cases by the relative number of tests completed on each day; this step was performed separately for each testing criterion because widening of criteria necessarily increases the number of tests.
 The number of negative cases was not reported on January 25 and 31, 2020; we took the average of cumulative negative cases from one day before and after these dates instead to impute missing values.
+\jd{It seems like it would be better to use the 
 A sensitivity analysis showed that qualitative patterns of inferred $R_t$ are robust to these adjustments (Supplementary Materials).
 
 We then estimated time-dependent \emph{backward} confirmation-to-onset delay distributions from the partial line list using a negative-binomial regression with \texttt{brms} package \citep{burkner2017brms} (\fref{dist}C).
@@ -186,14 +191,14 @@ Vertical lines indicate Feb 18, 2020, when the first case was confirmed in Daegu
 In Daegu, estimates of $\mathcal R_t$ gradually decrease and eventually drop below 1 about a week after the reporting of its first case, coinciding with the decrease in the metro traffic volume (\fref{eff}A).
 Our estimates of $\mathcal R_t$ for Daegu are consistent with the estimates of $\mathcal R_t$ for South Korea by Abbott \textit{et al.} \cite{tempvar} --- their estimates drop below 1 slightly later because they rely on number of symptomatic cases instead.
 On the other hand, estimates of $\mathcal R_t$ remain around 1 in Seoul (\fref{eff}B);
-while social distancing is likely to have assisted in mitigating the spread in Seoul, our analysis suggests that 50\% decrease in metro traffic was insufficient to suppress the spread.
+our analysis suggests that social distancing in Seoul was less intense, and this could be why reduction in spread was less effective.
 Stronger distancing or further intervention will be necessary to reduce $\mathcal R_t$ below 1.
 Similar patterns in the estimates of $\mathcal R_t$ are found in directly surrounding provinces, providing support for the robustness of our analysis (Supplementary Materials).
 
 \section{Discussion}
 
 The ongoing COVID-19 outbreak in South Korea provides a unique perspective to understanding and controlling the pandemic.
-Its experience provides evidence that the epidemic can be suppressed without draconian measures as in China \citep{kickbusch2020response}.
+Its experience provides evidence that the epidemic can be suppressed without less extreme measures than those take by China \citep{kickbusch2020response}.
 Our analysis reveals potential roles of social distancing in mitigating the COVID-19 epidemic in South Korea.
 Even though social distancing alone may not be able to fully prevent the spread of the disease, its ability to flatten the epidemic curve (cf. \fref{eff}B) reduces burden for healthcare system and provides time to plan for the future \citep{anderson2020will}.
 
@@ -204,11 +209,11 @@ We did not have the data to account for these factors.
 Nonetheless, the robustness of our findings is supported by the sensitivity analyses.
 
 Our analysis focused on comparing metro traffic, which serves as a proxy for the degree of social distancing, with epidemiological dynamics in two cities.
-However, our analysis does not allow us to measure the direct ``effect'' of social distancing on epidemiological dynamics.
+This analysis is indirect; we are not able to directly estimate the effect of social distancing on epidemiological dynamics.
 Moreover, other measures, such as intensive testing of core transmission groups and school closure, are also likely to have affected the changes in $\mathcal R_t$ \citep{kcdc}.
 Future studies should consider quantifying contributions of different measures in preventing the spread.
 
-Finally, our studies highlights the importance of characterizing geographical heterogeneity in estimating epidemic potential.
+Finally, our studies highlights the importance of considering geographical heterogeneity in estimating epidemic potential.
 The recent decrease in the number of reported cases in South Korea is likely to be strongly correlated with the decrease in the number of cases in Daegu.
 Our analysis reveals that the epidemic may still persist in other regions, including Seoul and Gyeonggi-do.
 Unless the reproduction number can be reduced below 1 in all regions, small outbreaks may continue to occur in South Korea.
