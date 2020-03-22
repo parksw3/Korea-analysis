@@ -218,7 +218,6 @@ g4 <- ggplot(covid_delay) +
   geom_boxplot(aes(date_onset, delay, group=date_onset)) +
   geom_ribbon(data=estdata, aes(date, ymin=lwr, ymax=upr), alpha=0.4) +
   geom_line(data=estdata, aes(date, median)) +
-  annotate("rect", xmin=as.Date("2020-01-10"), xmax=as.Date("2020-01-20"), ymin=-Inf, ymax=Inf, fill="orange", alpha=0.3) +
   geom_vline(xintercept=as.Date("2020-01-28"), lty=2) +
   geom_vline(xintercept=as.Date("2020-02-07"), lty=2) +
   geom_vline(xintercept=as.Date("2020-02-20"), lty=2) +
