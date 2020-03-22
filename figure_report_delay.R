@@ -8,8 +8,12 @@ library(rstan)
 library(gridExtra)
 library(ggplot2); theme_set(theme_bw())
 load("report_delay_censor.rda")
+load("report_delay_backward.rda")
 
-covid_test <- read_xlsx("data/COVID19-Korea-2020-03-11.xlsx", na="NA", sheet=2) 
+covid_test <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=2)
+
+covid_test$negative[7] <- (covid_test$negative[6]+covid_test$negative[8])/2
+covid_test$negative[13] <- (covid_test$negative[12]+covid_test$negative[14])/2
 
 covid_line <- read_xlsx("data/COVID19-Korea-2020-03-13.xlsx", na="NA") %>%
   mutate(
@@ -99,17 +103,45 @@ estmean <- sapply(1:length(ee$Intercept), function(i) {
 })
 
 estdata <- data.frame(
-  date=seq.Date(from=as.Date("2020-01-10"), to=as.Date("2020-03-11"), by=1),
+  date=seq.Date(from=as.Date("2020-01-10"), to=as.Date("2020-03-10"), by=1),
   median=apply(estmean, 1, median),
   lwr=apply(estmean, 1, quantile, 0.025),
   upr=apply(estmean, 1, quantile, 0.975)
-) %>%
-  group_by(date) %>%
-  summarize(
-    median=median(median),
-    lwr=median(lwr),
-    upr=median(upr)
-  )
+)
+
+covid_delay3 <- covid_all %>%
+  filter(!is.na(date_onset), !is.na(date_confirm)) %>%
+  mutate(
+    date_confirm=as.Date(date_confirm),
+    delay=yday(date_confirm)-yday(date_onset),
+    day=yday(date_confirm),
+    day=day-min(day)
+  ) %>%
+  filter(yday(date_confirm) <= yday(as.Date("2020-03-11")))
+
+covid_delay_fake2 <- data.frame(
+  day=covid_delay3$day[covid_delay3$date_confirm==as.Date("2020-01-20")]:56,
+  delay=1
+)
+
+ex2 <- extract_draws(report_delay_backward, newdata=covid_delay_fake2)
+
+Xs2 <- ex2$dpars$mu$sm$fe$Xs
+
+Zs2 <- ex2$dpars$mu$sm$re$sday$Zs[[1]]
+
+ee2 <- rstan::extract(report_delay_backward$fit)
+
+estmean2 <- sapply(1:length(ee2$b_Intercept), function(i) {
+  as.numeric(exp(ee2$b_Intercept[i] + Xs2 * ee2$bs[i] + Zs2 %*% ee2$s_1_1[i,]))
+})
+
+estdata2 <- data.frame(
+  date=seq.Date(from=as.Date("2020-01-20"), to=as.Date("2020-03-16"), by=1),
+  median=apply(estmean2, 1, median),
+  lwr=apply(estmean2, 1, quantile, 0.025),
+  upr=apply(estmean2, 1, quantile, 0.975)
+)
 
 covid_test2 <- covid_test %>%
   mutate(
@@ -121,63 +153,92 @@ covid_test2 <- covid_test %>%
   ) %>%
   mutate(
     diff=diff(c(0, total)),
-    diff2=diff(c(0, positive))
+    diff2=diff(c(0, positive)),
+    prop=diff2/diff
   )
 
-g1 <- ggplot(covid_delay2) +
-  geom_bar(data=covid_test2, aes(as.Date(date_report)-0.5, diff/1000), stat="identity", fill="red",alpha=0.3) +
-  geom_ribbon(data=estdata, aes(date, ymin=lwr, ymax=upr), alpha=0.4) +
-  geom_line(data=estdata, aes(date, median)) +
-  geom_errorbar(aes(date_onset, ymin=min, ymax=max), width=0) +
-  geom_point(aes(date_onset, mean, size=size)) +
-  geom_line(aes(date_onset, absmax), lty=2) +
-  annotate("rect", xmin=as.Date("2020-01-10"), xmax=as.Date("2020-01-19"), ymin=-Inf, ymax=Inf, fill="orange", alpha=0.3) +
-  # annotate("text", x=as.Date("2020-01-20"), y=23.5, label="Imported cases introduced", angle=90) +
-  # geom_vline(xintercept=as.Date("2020-01-19"), col="red", lwd=2) +
-  scale_size_area("Number of samples", guide=FALSE, max_size=2) +
-  scale_y_continuous("Symptom onset to confirmation (days)", limit=c(0, 22), expand=c(0, 0),
-                     sec.axis = sec_axis(~ . * 1000, name = "Daily number of tests")) +
-  scale_x_date("Date of symptom onset", expand=c(0, 0), limits=c(as.Date("2020-01-19"), as.Date("2020-03-10"))) +
+g1 <- ggplot(covid_test2) +
+  geom_bar(aes(as.Date(date_report), diff), stat="identity", alpha=0.5) +
+  geom_vline(xintercept=as.Date("2020-01-28"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-02-07"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-02-20"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-03-02"), lty=2) +
+  scale_y_continuous("Number of tests completed", limit=c(0, 21000), expand=c(0, 0)) +
+  scale_x_date("Date", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-16"))+c(0, 0.5)) +
   coord_cartesian(clip = 'off') +
+  ggtitle("A. Number of tests completed") +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.line = element_line(),
-    legend.position = c(0.87, 0.83),
-    axis.line.y.right = element_line(color = "red"),
-    axis.title.y.right = element_text(color="red"),
-    axis.text.y.right = element_text(color="red"),
-    axis.ticks.y.right = element_line(color = "red")
+    legend.position = c(0.87, 0.83)
   )
 
-g2 <- ggplot(covid_delay2) +
-  geom_bar(data=covid_test2, aes(as.Date(date_report)-0.5, diff2/50), stat="identity", fill="blue",alpha=0.3) +
-  geom_ribbon(data=estdata, aes(date, ymin=lwr, ymax=upr), alpha=0.4) +
-  geom_line(data=estdata, aes(date, median)) +
-  geom_errorbar(aes(date_onset, ymin=min, ymax=max), width=0) +
-  geom_point(aes(date_onset, mean, size=size)) +
-  geom_line(aes(date_onset, absmax), lty=2) +
-  annotate("rect", xmin=as.Date("2020-01-10"), xmax=as.Date("2020-01-19"), ymin=-Inf, ymax=Inf, fill="orange", alpha=0.3) +
-  # annotate("text", x=as.Date("2020-01-20"), y=23.5, label="Imported cases introduced", angle=90) +
-  # geom_vline(xintercept=as.Date("2020-01-19"), col="red", lwd=2) +
-  scale_size_area("Number of samples", guide=FALSE, max_size=2) +
-  scale_y_continuous("Symptom onset to confirmation (days)", limit=c(0, 22), expand=c(0, 0),
-                     sec.axis = sec_axis(~ . * 50, name = "Daily number of cases")) +
-  scale_x_date("Date of symptom onset", expand=c(0, 0), limits=c(as.Date("2020-01-19"), as.Date("2020-03-10"))) +
+g2 <- ggplot(covid_test2) +
+  geom_bar(aes(as.Date(date_report), prop), stat="identity", alpha=0.5) +
+  geom_vline(xintercept=as.Date("2020-01-28"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-02-07"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-02-20"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-03-02"), lty=2) +
+  scale_y_continuous("Proportion of positive cases", limit=c(0, 0.3), expand=c(0, 0)) +
+  scale_x_date("Date", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-16"))+c(0, 0.5)) +
   coord_cartesian(clip = 'off') +
+  ggtitle("B. Proportion of positive cases") +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.line = element_line(),
-    legend.position = c(0.87, 0.83),
-    axis.line.y.right = element_line(color = "blue"),
-    axis.title.y.right = element_text(color="blue"),
-    axis.text.y.right = element_text(color="blue"),
-    axis.ticks.y.right = element_line(color = "blue")
+    legend.position = c(0.87, 0.83)
   )
 
-gtot <- arrangeGrob(g1, g2, nrow=2)
+g3 <- ggplot(covid_delay3) +
+  geom_boxplot(aes(date_confirm, delay, group=date_confirm)) +
+  geom_ribbon(data=estdata2, aes(date, ymin=lwr, ymax=upr), alpha=0.4) +
+  geom_line(data=estdata2, aes(date, median)) +
+  geom_vline(xintercept=as.Date("2020-01-28"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-02-07"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-02-20"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-03-02"), lty=2) +
+  #geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
+  # annotate("text", x=as.Date("2020-01-20"), y=23.5, label="Imported cases introduced", angle=90) +
+  # geom_vline(xintercept=as.Date("2020-01-19"), col="red", lwd=2) +
+  scale_size_area("Number of samples", guide=FALSE, max_size=2) +
+  scale_y_continuous("Confirmation to symptom onset (days)", limit=c(0, 21), expand=c(0, 0)) +
+  scale_x_date("Date of symptom onset", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-16"))+c(0, 0.5)) +
+  coord_cartesian(clip = 'off') +
+  ggtitle("C. Backward confirmation-to-onset delay") +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line(),
+    legend.position = c(0.87, 0.83)
+  )
 
-ggsave("figure_report_delay.pdf", gtot, width=6, height=8)
+g4 <- ggplot(covid_delay) +
+  geom_boxplot(aes(date_onset, delay, group=date_onset)) +
+  geom_ribbon(data=estdata, aes(date, ymin=lwr, ymax=upr), alpha=0.4) +
+  geom_line(data=estdata, aes(date, median)) +
+  annotate("rect", xmin=as.Date("2020-01-10"), xmax=as.Date("2020-01-20"), ymin=-Inf, ymax=Inf, fill="orange", alpha=0.3) +
+  geom_vline(xintercept=as.Date("2020-01-28"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-02-07"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-02-20"), lty=2) +
+  geom_vline(xintercept=as.Date("2020-03-02"), lty=2) +
+  # annotate("text", x=as.Date("2020-01-20"), y=23.5, label="Imported cases introduced", angle=90) +
+  # geom_vline(xintercept=as.Date("2020-01-19"), col="red", lwd=2) +
+  scale_size_area("Number of samples", guide=FALSE, max_size=2) +
+  scale_y_continuous("Symptom onset to confirmation (days)", limit=c(0, 21), expand=c(0, 0)) +
+  scale_x_date("Date of symptom onset", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-16"))+c(0, 0.5)) +
+  coord_cartesian(clip = 'off') +
+  ggtitle("D. Forward onset-to-confirmation delay") +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line(),
+    legend.position = c(0.87, 0.83)
+  )
+
+gtot <- arrangeGrob(g1, g2, g3, g4, nrow=2)
+
+ggsave("figure_report_delay.pdf", gtot, width=10, height=6)
 
 save("estmean", file="pred_report_delay.rda")
