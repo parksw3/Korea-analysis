@@ -135,7 +135,7 @@ Black lines and gray ribbons represent the median estimates of the mean delays a
 In order to estimate the time-dependent reproduction number $R_t$ (i.e., the expected number of secondary cases caused by an individual infected at time $t$ \citep{fraser2007estimating}), 
 we first accounted for changes in testing criteria (\fref{dist}B) by multiplying the daily number of reported cases by the relative detection rate for each criterion (i.e., a proportion of cases tested positive based on a criterion divided by the mean detection rate).
 Likewise, we accounted for changes in the number of tests completed on each day (\fref{dist}A) by dividing the scaled number of reported cases by the relative number of tests completed on each day; this step was performed separately for each testing criterion because widening of criteria necessarily increases the number of tests.
-The number of negative cases was not reported on January 25 and 31, 2020; we took the average of cumulative negative cases one day before and after these days instead to impute missing values.
+The number of negative cases was not reported on January 25 and 31, 2020; we took the average of cumulative negative cases from one day before and after these dates instead to impute missing values.
 A sensitivity analysis showed that qualitative patterns of inferred $R_t$ are robust to these adjustments (Supplementary Materials).
 
 We then estimated time-dependent \emph{backward} confirmation-to-onset delay distributions from the partial line list using a negative-binomial regression with \texttt{brms} package \citep{burkner2017brms} (\fref{dist}C).
