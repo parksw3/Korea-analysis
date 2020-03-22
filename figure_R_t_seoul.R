@@ -121,15 +121,14 @@ g2 <- ggplot(rt_all) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 10), expand=c(0, 0),
-                     breaks=c(0, 2, 4, 6, 8)) +
+  scale_y_continuous("Effective reproduction number", limits=c(0, 15), expand=c(0, 0)) +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.line = element_line(),
     legend.position = "none",
     legend.title = element_blank(),
-    plot.margin = margin(5, 38, 5, 30, unit="pt")
+    plot.margin = margin(5, 38, 5, 25, unit="pt")
   )
 
 gseoul <- arrangeGrob(g1, g2, nrow=2)

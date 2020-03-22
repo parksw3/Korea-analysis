@@ -103,7 +103,7 @@ g1 <- ggplot(geo) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
-  scale_y_continuous("Reconstructed incidence", limits=c(0, 200), expand=c(0, 0),
+  scale_y_continuous("Reconstructed incidence", limits=c(0, 300), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*1, name = "Daily number of reported cases")) +
   theme(
     panel.grid = element_blank(),
@@ -122,7 +122,7 @@ g2 <- ggplot(rt_all) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 12.4), expand=c(0, 0),
+  scale_y_continuous("Effective reproduction number", limits=c(0, 14), expand=c(0, 0),
                      breaks=c(0, 2, 4, 6, 8, 10, 12)) +
   theme(
     panel.grid = element_blank(),

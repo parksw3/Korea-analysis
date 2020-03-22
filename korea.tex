@@ -53,7 +53,7 @@
 \begin{flushleft}{
 	\Large
 	\textbf\newline{
-		Potential roles of social distancing in preventing the spread of coronavirus disease 2019 (COVID-19) in South Korea
+		Potential roles of social distancing in mitigating the spread of coronavirus disease 2019 (COVID-19) in South Korea
 	}
 }
 \newline
@@ -84,10 +84,10 @@ Bryan T.\ Grenfell\textsuperscript{1,2,6}
 
 \pagebreak
 
-Since its first appearance in Wuhan, China, in December 2019, the novel coronavirus disease (COVID-19) has spread internationally, including to South Korea.
+Since its first appearance in Wuhan, China, in December 2019 \citep{pneumonia}, the novel coronavirus disease (COVID-19) has spread internationally, including to South Korea.
 The first COVID-19 case in South Korea was confirmed on January 20, 2020, from a traveling resident of Wuhan, China \citep{kcdc}.
 The epidemic then took off in mid-February when COVID-19 began to spread within a church from a city of Daegu --- as of March 18, 2020, 8,413 cases have been confirmed, of which 60\% are related to the church \citep{kcdc}.
-While its success in controlling the epidemic has been widely attributed to its extensive testing \citep{science}, other factors, such as social distancing, are also likely to have played important roles.
+While its success in suppressing the epidemic has been widely attributed to its intensive testing \citep{fergusonimpact, science}, other factors, such as social distancing, are also likely to have played important roles.
 Here, we describe potential roles of social distancing in mitigating the spread of COVID-19 by using metro traffic data to compare epidemics in two geographically separated major cities in South Korea.
 
 \section{Data description}
@@ -102,7 +102,7 @@ All data and original reports are stored in a publicly available GitHub reposito
 \caption{
 \textbf{Comparison of epidemiological and traffic data from Daegu and Seoul.}
 Solid lines represent the daily metro traffic volume in 2020 (red) and mean daily traffic volume between 2017--2019 (black).
-Daily traffic from previous years have been shifted by 1--3 days to align day of the week.
+Daily traffic from previous years have been shifted by 1--3 days to align day of the weeks.
 Vertical lines indicate Feb 18, 2020, when the first case was confirmed in Daegu.
 }
 \label{fig:data}
@@ -127,6 +127,8 @@ Soon after the first church-related case was confirmed in Daegu on Feb 18, 2020,
 \textbf{Changes in the number of tests and delay distributions over time.}
 }
 Vertical lines indicate the date on which testing criteria expanded.
+Boxplots (C--D) represent the observed delays.
+Black lines and gray ribbons represent the median estimates of the mean delays and their associated 95\% credible intervals.
 \label{fig:dist}
 \end{figure}
 
@@ -136,24 +138,43 @@ Likewise, we accounted for changes in the number of tests completed on each day 
 A sensitivity analysis showed that qualitative patterns of inferred $R_t$ are robust to these adjustments (Supplementary Materials).
 
 We then estimated time-dependent \emph{backward} confirmation-to-onset delay distributions from the partial line list using a negative-binomial regression with \texttt{brms} package \citep{burkner2017brms} (\fref{dist}C).
-We combined the estimated posterior distribution of delay distributions with previously estimated incubation period distribution \citep{backer2020incubation} to obtain posterior samples for date of infection for each confirmed case.
-Likewise, we estimated time-dependent \emph{forward} onset-to-confirmation delay distribution using a negative-binomial regression while accounting for right-censoring (\fref{dist}D).
-This allowed us to calculate the degree of censoring (i.e., median probability that a case infected on a given day will be reported after March 16, 2020).
+We combined the estimated posterior distribution of delay distributions with previously estimated incubation period distribution (Table 1) to obtain posterior samples for date of infection for each confirmed case.
+Likewise, we estimated time-dependent \emph{forward} onset-to-confirmation delay distribution using the same negative-binomial regression model, while accounting for right-censoring (\fref{dist}D),
+to calculate the degree of censoring (i.e., median probability that a case infected on a given day will be reported after March 16, 2020).
 Details are provided in the Supplementary Materials.
+
+\begin{table}[t]
+\begin{center}
+\small
+\begin{tabular}{p{4cm}|p{4.5cm}|p{4.7cm}|l}
+ & Parameterization & Priors & Source \\
+\hline
+Incubation period\newline distribution & $\mathrm{Gamma}(\mu_I, \mu_I^2/\sigma^2)$ & $\mu_I\sim \mathrm{Gamma}(6.5\,\textrm{days}, 145)$\newline$\sigma\sim \mathrm{Gamma}(2.6, 25)$ & \citep{backer2020incubation} \\
+\hline
+Generation-interval\newline distribution & $\mathrm{NegativeBinomial}(\mu_G, \theta)$ & $\mu_G\sim\mathrm{Gamma}(5\,\textrm{days},62)$\newline$\theta\sim\mathrm{Gamma}(5,20)$ & \citep{ferretti2020quantifying, ganyani2020estimating} \\
+\hline
+\end{tabular}
+\end{center}
+\caption{
+\textbf{Assumed incubation and generation-interval distributions.}
+Gamma distributions are parameterized using its mean and shape.
+Negative binomial distributions are parameterized using its mean and dispersion.
+Priors are chosen such that the 95\% quantiles of prior means and standard deviations are consistent with previous estiamtes.
+}
+\end{table}
 
 For each posterior sample of the reconstructed incidence time series (i.e., the number of infected individuals on day $t$), we divided incidence by $1-\textrm{degree of censoring}$ and estimated the time-dependent reproduction number using the renewal equation with a 14-day sliding window \citep{fraser2007estimating}:
 \begin{equation}
 \mathcal R_t = \frac{I_t}{\sum_{k=1}^{14} I_{t-k} w_k},
 \end{equation}
-where $I_t$ is the censoring-adjusted incidence time series and $w_k$ is the assumed generation-interval distribution.
-We restricted the calculation of the time-dependent reproduction number between February 2, 2020 (14 days after the first confirmed case was imported) and March 10, 2020 (because the degree of censoring would be too large after this date).
+where $I_t$ is the censoring-adjusted incidence time series and $w_k$ is the generation-interval distribution randomly drawn from a prior distribution (Table 1).
+We restricted the calculation of $\mathcal R_t$ between February 2, 2020 (14 days after the first confirmed case was imported) and March 10, 2020 (because the degree of censoring would be too large after this date to estimate $\mathcal R_t$).
 
 \begin{figure}[!ht]
 \includegraphics[width=\textwidth]{figure_compare_R_t.pdf}
 \caption{
 \textbf{Comparison of time-dependent reproduction number and normalized traffic in Daegu and Seoul.}
-Black lines represent the median estimates of $R_t$. 
-Gray ribbons represent the corresponding 95\% credible intervals.
+Black lines and gray ribbons represent the median estimates of $R_t$ and their corresponding 95\% credible intervals.
 Red lines represent the normalized traffic volume.
 Vertical lines indicate Feb 18, 2020, when the first case was confirmed in Daegu.
 }
@@ -161,35 +182,39 @@ Vertical lines indicate Feb 18, 2020, when the first case was confirmed in Daegu
 \end{figure}
 
 \fref{eff} compares the estimates of $\mathcal R_t$ in Daegu and Seoul.
-Estimates of $\mathcal R_t$ gradually decrease in Daegu and eventually drop below 1 about a week after the reporting of its first case, coinciding with the decrease in the metro traffic volume (\fref{eff}A).
-Our estimates of $\mathcal R_t$ for Daegu are consistent with the estimates of $\mathcal R_t$ for South Korea by \cite{tempvar} --- their estimates drop below 1 slightly later because they rely on number of symptomatic cases instead.
-On the other hand, estimates of $\mathcal R_t$ remain around 1 in Seoul (\fref{eff}B), suggesting that the degree of social distancing may have been insufficient to prevent the spread in Seoul;
-stronger distancing or further intervention will be necessary to decrease $\mathcal R_t$ below 1.
-Similar patterns in the estimates of $\mathcal R_t$ are found in adjacent provinces, providing support for the robustness of our analysis (Supplementary Materials).
+In Daegu, estimates of $\mathcal R_t$ gradually decrease and eventually drop below 1 about a week after the reporting of its first case, coinciding with the decrease in the metro traffic volume (\fref{eff}A).
+Our estimates of $\mathcal R_t$ for Daegu are consistent with the estimates of $\mathcal R_t$ for South Korea by Abbott \textit{et al.} \cite{tempvar} --- their estimates drop below 1 slightly later because they rely on number of symptomatic cases instead.
+On the other hand, estimates of $\mathcal R_t$ remain around 1 in Seoul (\fref{eff}B);
+while social distancing is likely to have assisted in mitigating the spread in Seoul, our analysis suggests that 50\% decrease in metro traffic was insufficient to suppress the spread.
+Stronger distancing or further intervention will be necessary to reduce $\mathcal R_t$ below 1.
+Similar patterns in the estimates of $\mathcal R_t$ are found in directly surrounding provinces, providing support for the robustness of our analysis (Supplementary Materials).
 
 \section{Discussion}
 
 The ongoing COVID-19 outbreak in South Korea provides a unique perspective to understanding and controlling the pandemic.
-Its experience provides evidence that the epidemic can be contained without draconian measures as in China.
-Our analysis provides indirect, but clear, evidence that social distancing is likely to have assisted in mitigating the epidemic in South Korea.
+Its experience provides evidence that the epidemic can be suppressed without draconian measures as in China \citep{kickbusch2020response}.
+Our analysis reveals potential roles of social distancing in mitigating the COVID-19 epidemic in South Korea.
 Even though social distancing alone may not be able to fully prevent the spread of the disease, its ability to flatten the epidemic curve (cf. \fref{eff}B) reduces burden for healthcare system and provides time to plan for the future \citep{anderson2020will}.
 
-There are many other factors that allowed South Korea to control the COVID-19 outbreak.
-In particular, the large number of tests as well as the intensity of the testing are likely to have played major roles.
+Our study is not without limitations.
+In particular, we did not account for differences in the delay distributions or changes in the number of tests or detection rates among cities.
+The intensity of intervention is likely to vary across regions given that majority of COVID-19 cases in South Korea were reported from Daegu.
+We did not have the data to account for these factors.
+Nonetheless, the robustness of our findings is supported by the sensitivity analyses.
 
-Furthermore, other intervention measures, such as school closures, are likely to have reduced transmission rates.
+Our analysis focused on comparing metro traffic, which serves as a proxy for the degree of social distancing, with epidemiological dynamics in two cities.
+However, our analysis does not allow us to measure the direct ``effect'' of social distancing on epidemiological dynamics.
+Moreover, other measures, such as intensive testing of core transmission groups and school closure, are also likely to have affected the changes in $\mathcal R_t$ \citep{kcdc}.
+Future studies should consider quantifying contributions of different measures in preventing the spread.
 
-
-Caveats:
-\begin{itemize}
-  \item Only two cities...although two coupled provinces show strikingly similar patterns
-  \item Correlation not causation
-  \item Did not account for geographic heterogeneity in testing or etc. Estimation of delay distribution etc all based on national line list.
-\end{itemize}
+Finally, our studies highlights the importance of characterizing geographical heterogeneity in estimating epidemic potential.
+The recent decrease in the number of reported cases in South Korea is likely to be strongly correlated with the decrease in the number of cases in Daegu.
+Our analysis reveals that the epidemic may still persist in other regions, including Seoul and Gyeonggi-do.
+Unless the reproduction number can be reduced below 1 in all regions, small outbreaks may continue to occur in South Korea.
 
 \section*{Contribution}
 
-Data collection: SWP; analysis: SWP. All authors contributed to the writing and approval of the final report.
+Data collection: SWP; conceptualization: SWP, CV; analysis: SWP; first draft: SWP, JD. All authors contributed to the writing and approval of the final report.
 
 \pagebreak
 
@@ -204,14 +229,61 @@ Data collection: SWP; analysis: SWP. All authors contributed to the writing and 
 
 \subsection*{Estimating delay distributions between onset and reporting}
 
-We estimated both forward and backward delay distributions.
+We estimated both forward (onset-to-confirmation) and backward (confirmation-to-onset) delay distributions using Bayesian negative binomial regressions with log links.
+The backward delay distribution is inferred directly using the \texttt{brms} package \citep{burkner2017brms}.
+The time-dependent mean of the negative binomial distribution is modeled using splines.
+We assumed weakly informative priors on the fixed effects: normal distributions with mean of 0 and standard devition of 2;
+note that these distributions are priors on link scale.
 
+To estimate the forward delay distribution, we modified the stan code to account for right-censoring and ran the code using the \texttt{rstan} package \citep{rstan}.
+In particular, we modified the likelihood such that given a delay of $x_i$ days, symptom onset day $t_i$ and the day of measurement of $k$, the likelihood of observing the delay is given by:
+\begin{equation}
+\frac{f(x_i|\mu(t_i), \theta)}{F(k-t_i|\mu(t_i), \theta)},
+\end{equation}
+where $f$ is the negative binomial distribution with time-dependent mean $\mu(t_i)$ and dispersion parameter $\theta$. This likelihood accounts for the fact that the delay between symptom onset and confirmation cannot be longer than $k-t_i$ (otherwise, the case will be reported after the date of measurement). Convergence is assessed by ensuring that the Gelman-Rubin statistic is lower than 1.01 for all parameters \citep{gelman1992inference}.
 
+\pagebreak
 
 \begin{figure}[!ht]
 \includegraphics[width=\textwidth]{figure_R_t_all.pdf}
 \caption{
-\textbf{Comparison of effective reproduction number in Daegu, Seoul, Gyeongsangbuk-do, and Gyeonggi-do.}
+\textbf{Comparison of effective reproduction number and the daily number of reported cases in Daegu, Seoul, Gyeongsangbuk-do, and Gyeonggi-do.}
+}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[!ht]
+\includegraphics[width=\textwidth]{figure_R_t_daegu.pdf}
+\caption{
+\textbf{Sensitivity analysis of estimates of $\mathcal R_t$ in Daegu.}
+}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[!ht]
+\includegraphics[width=\textwidth]{figure_R_t_seoul.pdf}
+\caption{
+\textbf{Sensitivity analysis of estimates of $\mathcal R_t$ in Seoul.}
+}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[!ht]
+\includegraphics[width=\textwidth]{figure_R_t_gyeongbuk.pdf}
+\caption{
+\textbf{Sensitivity analysis of estimates of $\mathcal R_t$ in Gyeongsangbuk-do.}
+}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[!ht]
+\includegraphics[width=\textwidth]{figure_R_t_gyeonggi.pdf}
+\caption{
+\textbf{Sensitivity analysis of estimates of $\mathcal R_t$ in Gyeonggi-do.}
 }
 \end{figure}
 

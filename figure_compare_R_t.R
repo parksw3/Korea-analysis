@@ -134,7 +134,7 @@ g1 <- ggplot(rt_daegu) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 8.5), expand=c(0, 0),
+  scale_y_continuous("Effective reproduction number", limits=c(0, 9), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*1/6, name = "(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)")) +
   ggtitle("A. Daegu") +
   theme(
@@ -159,7 +159,7 @@ g2 <- ggplot(rt_seoul) +
   geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
   ggtitle("B. Seoul") +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 8.5), expand=c(0, 0),
+  scale_y_continuous("Effective reproduction number", limits=c(0, 9), expand=c(0, 0),
                      sec.axis = sec_axis(~ ./6, name = "(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)")) +
   theme(
     panel.grid = element_blank(),

@@ -105,7 +105,7 @@ for (i in 1:length(ee$b_Intercept)) {
   ## pgamma(4.2, 25, 25/2.6) - pgamma(1.8, 25, 25/2.6)
   sdinc <- rgamma(1, 25, 25/2.6)
   
-  shape <- meaninc^2/sdinc^2
+  shapeinc <- meaninc^2/sdinc^2
   
   meandelay <- estmean[,i]
   shape <- ee$shape[i]
@@ -114,7 +114,7 @@ for (i in 1:length(ee$b_Intercept)) {
     data_frame(
       confirm=as.Date("2020-01-20")+x-1,
       onset=confirm-rnbinom(cases[x], mu=meandelay[x], size=shape),
-      infection=onset-floor(rgamma(cases[x], shape=shape, rate=shape/meaninc))
+      infection=onset-floor(rgamma(cases[x], shape=shapeinc, rate=shapeinc/meaninc))
     )
   }, simplify = FALSE) %>%
     bind_rows
