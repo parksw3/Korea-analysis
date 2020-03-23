@@ -123,6 +123,13 @@ seoul_traffic <- data.frame(
   traffic=traffic_seoul4$total/((traffic_seoul1$total + traffic_seoul2$total + traffic_seoul3$total)/3)
 )
 
+daegu_merge <- merge(rt_daegu, daegu_traffic)
+cor.test(daegu_merge$median, daegu_merge$traffic)
+
+seoul_merge <- merge(rt_seoul, seoul_traffic)
+cor.test(seoul_merge$median, seoul_merge$traffic)
+
+
 g1 <- ggplot(rt_daegu) +
   geom_bar(data=daegu, aes(date_report, cases/max(daegu$cases)), stat="identity", alpha=0.3) + 
   geom_hline(yintercept=6, lty=2, col=2) + 
