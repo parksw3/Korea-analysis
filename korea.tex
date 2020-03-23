@@ -114,7 +114,7 @@ Unlike the epidemic in Daegu, which is characterized by a single, large peak fol
 
 Daily metro traffic in Daegu and Seoul between 2017--2020 was obtained from \url{data.go.kr} and \url{data.seoul.go.kr}, respectively.
 We tabulated the total number of individuals who got on the subway or monorail (\fref{data}).
-Soon after the first church-related case was confirmed in Daegu on Feb 18, 2020, the daily traffic volume decreased by about 80\% and 50\% in Daegu and Seoul, respectively. \jd{Cut a lot of words here; I think it's fine, but see wyt.}
+Soon after the first church-related case was confirmed in Daegu on Feb 18, 2020, the daily traffic volume decreased by about 80\% and 50\% in Daegu and Seoul, respectively.
 
 %% https://www.data.go.kr/dataset/15002503/fileData.do
 %% https://data.seoul.go.kr/dataList/OA-12914/S/1/datasetView.do
@@ -132,15 +132,11 @@ Black lines and gray ribbons represent the median estimates of the mean delays a
 \label{fig:dist}
 \end{figure}
 
-We are assuming that during the early period of an epidemic if we follow a consistent protocol of identifying and deciding whom to test, the positivity should stay about the same and that's the justification for the first correction.
-
-\jd{Flow needs to be cleaned up here, but I'm not letting myself take the time.}
-In order to estimate the time-dependent reproduction number $R_t$ (i.e., the expected number of secondary cases caused by an individual infected at time $t$ \citep{fraser2007estimating}), 
-we first accounted for changes in testing criteria (\fref{dist}B) by multiplying the daily number of reported cases by the relative detection rate for each criterion (i.e., a proportion of cases tested positive based on a criterion divided by the mean detection rate).
-\jd{What do you mean by detection rate?}
+In order to estimate the time-dependent reproduction number $R_t$ (i.e., the expected number of secondary cases caused by an individual infected at time $t$ \citep{fraser2007estimating}), we reconstructed the incidence time series (i.e., the number of infected individuals on each day).
+First, we accounted for changes in testing criteria, which occurred 4 times between January 20--March 16, 2020, by assuming that the proportion positive should remain roughly constant if we follow a consistent protocol of identifying and deciding whom to test.
+To do so, we calculated the relative proportion of positive cases during each period (divided by the the between-period mean) and multiplied the daily number of reported cases by the relative proportions of the corresponding criterion.
 Likewise, we accounted for changes in the number of tests completed on each day (\fref{dist}A) by dividing the scaled number of reported cases by the relative number of tests completed on each day; this step was performed separately for each testing criterion because widening of criteria necessarily increases the number of tests.
 The number of negative cases was not reported on January 25 and 31, 2020; we took the average of cumulative negative cases from one day before and after these dates instead to impute missing values.
-\jd{It seems like it would be better to use the 
 A sensitivity analysis showed that qualitative patterns of inferred $R_t$ are robust to these adjustments (Supplementary Materials).
 
 We then estimated time-dependent \emph{backward} confirmation-to-onset delay distributions from the partial line list using a negative-binomial regression with \texttt{brms} package \citep{burkner2017brms} (\fref{dist}C).
@@ -169,7 +165,7 @@ Priors are chosen such that the 95\% quantiles of prior means and standard devia
 }
 \end{table}
 
-For each posterior sample of the reconstructed incidence time series (i.e., the number of infected individuals on day $t$), we divided incidence by $1-\textrm{degree of censoring}$ and estimated the time-dependent reproduction number using the renewal equation with a 14-day sliding window \citep{fraser2007estimating}:
+For each posterior sample of the reconstructed incidence time series, we divided incidence by $1-\textrm{degree of censoring}$ and estimated the time-dependent reproduction number using the renewal equation with a 14-day sliding window \citep{fraser2007estimating}:
 \begin{equation}
 \mathcal R_t = \frac{I_t}{\sum_{k=1}^{14} I_{t-k} w_k},
 \end{equation}
