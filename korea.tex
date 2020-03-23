@@ -142,7 +142,7 @@ A sensitivity analysis showed that qualitative patterns of inferred $R_t$ are ro
 We then estimated time-dependent \emph{backward} confirmation-to-onset delay distributions from the partial line list using a negative-binomial regression with \texttt{brms} package \citep{burkner2017brms} (\fref{dist}C).
 We combined the estimated posterior distribution of delay distributions with previously estimated incubation period distribution (Table 1) to obtain posterior samples for date of infection for each confirmed case.
 Likewise, we estimated time-dependent \emph{forward} onset-to-confirmation delay distribution using the same negative-binomial regression model, while accounting for right-censoring (\fref{dist}D),
-to calculate the degree of censoring (i.e., median probability that a case infected on a given day will be reported after March 16, 2020).
+to calculate the median probability that a case infected on a given day will be reported before March 16, 2020.
 Details are provided in the Supplementary Materials.
 
 \begin{table}[t]
@@ -161,11 +161,11 @@ Generation-interval\newline distribution & $\mathrm{NegativeBinomial}(\mu_G, \th
 \textbf{Assumed incubation and generation-interval distributions.}
 Gamma distributions are parameterized using its mean and shape.
 Negative binomial distributions are parameterized using its mean and dispersion.
-Priors are chosen such that the 95\% quantiles of prior means and standard deviations are consistent with previous estiamtes.
+Priors are chosen such that the 95\% quantiles of prior means and standard deviations are consistent with previous estimates.
 }
 \end{table}
 
-For each posterior sample of the reconstructed incidence time series, we divided incidence by $1-\textrm{degree of censoring}$ and estimated the time-dependent reproduction number using the renewal equation with a 14-day sliding window \citep{fraser2007estimating}:
+For each posterior sample of the reconstructed incidence time series, we divided daily incidence by the probability that they would have been reported before March 16, 2020, and estimated the time-dependent reproduction number using the renewal equation with a 14-day sliding window \citep{fraser2007estimating}:
 \begin{equation}
 \mathcal R_t = \frac{I_t}{\sum_{k=1}^{14} I_{t-k} w_k},
 \end{equation}
@@ -234,7 +234,7 @@ Data collection: SWP; conceptualization: SWP, CV; analysis: SWP; first draft: SW
 We estimated both forward (onset-to-confirmation) and backward (confirmation-to-onset) delay distributions using Bayesian negative binomial regressions with log links.
 The backward delay distribution is inferred directly using the \texttt{brms} package \citep{burkner2017brms}.
 The time-dependent mean of the negative binomial distribution is modeled using splines.
-We assumed weakly informative priors on the fixed effects: normal distributions with mean of 0 and standard devition of 2;
+We assumed weakly informative priors on the fixed effects: normal distributions with mean of 0 and standard deviation of 2;
 note that these distributions are priors on link scale.
 
 To estimate the forward delay distribution, we modified the stan code to account for right-censoring and ran the code using the \texttt{rstan} package \citep{rstan}.
