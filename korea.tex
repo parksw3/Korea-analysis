@@ -145,8 +145,8 @@ We then estimated time-dependent \emph{backward} confirmation-to-onset delay dis
 We combined the estimated posterior distribution of delay distributions with previously estimated incubation period distribution (Table 1) to obtain posterior samples for date of infection for each confirmed case.
 Likewise, we estimated time-dependent \emph{forward} onset-to-confirmation delay distribution using the same negative-binomial regression model, while accounting for right-censoring (\fref{dist}D),
 to calculate the median probability that a case infected on a given day will be reported before March 16, 2020.
-We note that changes in the mean backward delay (\fref{dist}C) reflect changes in incidence of symptomatic cases, whereas the decrease in the mean forward delay (\fref{dist}D) reflects the increase in the intensity of testing.
-Details are provided in the Supplementary Materials.
+Changes in the mean backward delay (\fref{dist}C) reflect changes in incidence of symptomatic cases, whereas the decrease in the mean forward delay (\fref{dist}D) reflects the improvement in the accuracy of case identification \citep{lai2020effect}.
+Implementation details are provided in the Supplementary Materials.
 
 \begin{table}[t]
 \begin{center}
@@ -196,7 +196,8 @@ On the other hand, estimates of $\mathcal R_t$ remain around 1 in Seoul (\fref{e
 our analysis suggests that social distancing in Seoul was less intense, and this could be why reduction in spread was less effective.
 Stronger distancing or further intervention will be necessary to reduce $\mathcal R_t$ below 1.
 While we find clear, positive correlations between the normalized traffic and the median estimates of $\mathcal R_t$ in both Daegu ($r=0.87$; 95\% CI: 0.74--0.94) and Seoul ($r=0.55$; 95\% CI: 0.27--0.74), the strength of correlations are likely to be strongly conflated because they do not account for the effects of any other measures that could have affected $\mathcal R_t$;
-we do not find any signatures of lags (Supplementary Materials).
+in particular, the increase in the number of tests (\fref{dist}A) as well as the improvement in the accuracy of case identification (\fref{dist}D) are likely to have played important roles in reducing $\mathcal R_t$.
+We do not find any signatures of lags (Supplementary Materials).
 Similar patterns in the estimates of $\mathcal R_t$ are found in directly surrounding provinces (Gyeongsangbuk-do and Gyeonggi-do), providing support for the robustness of our analysis (Supplementary Materials).
 
 \section{Discussion}
@@ -210,8 +211,8 @@ Our study is not without limitations.
 In particular, we did not account for differences in the delay distributions or changes in the number of tests among cities.
 The intensity of intervention is likely to vary across regions given that majority of COVID-19 cases in South Korea were reported from Daegu.
 We did not have the data to account for these factors.
-We also did not distinguish local and imported cases, which may overestimate $\mathcal R_t$.
 Nonetheless, the robustness of our findings is supported by the sensitivity analyses.
+We also did not distinguish local and imported cases, which may overestimate $\mathcal R_t$ \citep{thompson2019improved}.
 
 Our analysis focused on comparing metro traffic, which serves as a proxy for the degree of social distancing, with epidemiological dynamics in two cities.
 This analysis is indirect; we are not able to directly estimate the effect of social distancing on epidemiological dynamics.
@@ -221,6 +222,7 @@ Future studies should consider quantifying contributions of different measures i
 Finally, our study highlights the importance of considering geographical heterogeneity in estimating epidemic potential.
 The recent decrease in the number of reported cases in South Korea is likely to be strongly correlated with the decrease in the number of cases in Daegu.
 Our analysis reveals that the epidemic may still persist in other regions, including Seoul and Gyeonggi-do.
+Persistent reportings of COVID-19 cases in Seoul and Gyeonggi-do (around 10 cases almost everyday) between March 11--22, 2020, provide further support for our analysis \citep{kcdc}.
 Unless the reproduction number can be reduced below 1 in all regions, small outbreaks may continue to occur in South Korea.
 
 \section*{Contribution}
@@ -322,6 +324,5 @@ where $f$ is the negative binomial distribution with time-dependent mean $\mu(t_
 \textbf{Cross correlation between the normalized traffic volume and the median estimates of $\mathcal R_t$.}
 }
 \end{figure}
-
 
 \end{document}
