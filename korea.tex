@@ -4,8 +4,8 @@
 \usepackage{graphicx}
 %\usepackage{adjustbox}
 
-%% \newcommand{\comment}{\showcomment}
-\newcommand{\comment}{\nocomment}
+\newcommand{\comment}{\showcomment}
+%% \newcommand{\comment}{\nocomment}
 
 \newcommand{\showcomment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
 \newcommand{\nocomment}[3]{}
@@ -202,22 +202,21 @@ Vertical lines indicate Feb 18, 2020, when the first case was confirmed in Daegu
 
 \fref{eff} compares the reconstructed incidence (A,B) and estimates of $\mathcal R_t$ (C,D) in Daegu and Seoul.
 In Daegu, estimates of $\mathcal R_t$ gradually decrease and eventually drop below 1 about a week after the reporting of its first case, coinciding with the decrease in the metro traffic volume (\fref{eff}C).
-The initial decrease in $\mathcal R_t$ may reflect the possibility that a large proportion of church-related transmission could have occurred much earlier and therefore caused behavior change within the church; for example, the first confirmed case in Daegu became symptomatic on February 7, 2020, and visited the church on February 9 and 16, 2020 \citep{kcdc}.
+The initial decrease in $\mathcal R_t$ may reflect behavior change within the church; the first confirmed case in Daegu became symptomatic on February 7, 2020, and visited the church on February 9 and 16, 2020 \citep{kcdc}.
 % Our estimates of $\mathcal R_t$ for Daegu are consistent with the estimates of $\mathcal R_t$ for South Korea by Abbott \textit{et al.} \cite{tempvar} --- their estimates drop below 1 slightly later because they rely on number of symptomatic cases instead.
 
 On the other hand, estimates of $\mathcal R_t$ remain around 1 in Seoul (\fref{eff}D).
 Our analysis suggests that social distancing in Seoul was less intense, and this could be why reduction in spread was less effective.
 Stronger distancing or further intervention will be necessary to reduce $\mathcal R_t$ below 1.
 
-While we find clear, positive correlations between the normalized traffic and the median estimates of $\mathcal R_t$ in both Daegu ($r=0.87$; 95\% CI: 0.74--0.94) and Seoul ($r=0.55$; 95\% CI: 0.27--0.74), the strength of correlations are likely to be strongly conflated because they do not account for the effects of any other measures that could have affected $\mathcal R_t$;
-in particular, the increase in the number of tests (\fref{dist}A) as well as the improvement in the accuracy of case identification (\fref{dist}D) are likely to have played important roles in reducing $\mathcal R_t$.
-We do not find any signatures of lags (Supplementary Materials).
+While we find clear, positive correlations between the normalized traffic and the median estimates of $\mathcal R_t$ in both Daegu ($r=0.87$; 95\% CI: 0.74--0.94) and Seoul ($r=0.55$; 95\% CI: 0.27--0.74), these correlations are conflated by time trends, and are also likely conflated by other measures that could have affected $\mathcal R_t$ --
+in particular, the increase in the number of tests (\fref{dist}A) as well as the improvement in the accuracy of case identification (\fref{dist}D).
+We do not find clear signatures of lagged correlation (Supplementary Materials).
 Similar patterns in the estimates of $\mathcal R_t$ are found in directly surrounding provinces (Gyeongsangbuk-do and Gyeonggi-do), providing support for the robustness of our analysis (Supplementary Materials).
 
 \section{Discussion}
 
-The ongoing COVID-19 outbreak in South Korea provides a unique perspective to understanding and controlling the pandemic.
-Its experience provides evidence that the epidemic can be suppressed with less extreme measures than those taken by China \citep{kickbusch2020response}.
+The South Korean experience with COVID-19 provides evidence that epidemics can be suppressed with less extreme measures than those taken by China \citep{kickbusch2020response}.
 Our analysis reveals potential roles of social distancing in mitigating the COVID-19 epidemic in South Korea.
 Even though social distancing alone may not be able to fully prevent the spread of the disease, its ability to flatten the epidemic curve (cf. \fref{eff}B) reduces burden for healthcare system and provides time to plan for the future \citep{anderson2020will}.
 
@@ -235,9 +234,9 @@ Moreover, other measures, such as intensive testing of core transmission groups 
 Future studies should consider quantifying contributions of different measures in preventing the spread.
 
 Finally, our study highlights the importance of considering geographical heterogeneity in estimating epidemic potential.
-The recent decrease in the number of reported cases in South Korea is likely to be strongly correlated with the decrease in the number of cases in Daegu.
-Our analysis reveals that the epidemic may still persist in other regions, including Seoul and Gyeonggi-do.
-Persistent reportings of COVID-19 cases in Seoul and Gyeonggi-do (around 10 cases almost everyday) between March 11--22, 2020, provide further support for our conclusion \citep{kcdc}.
+The recent decrease in the number of reported cases in South Korea is driven by the sharp decrease in Daegu.
+Our analysis reveals that the epidemic may still persist in other regions, including Seoul and Gyeonggi-do;
+reports from Seoul and Gyeonggi-do (around 10 cases almost every day between March 11--22, 2020) provide further support for our conclusion \citep{kcdc}.
 Unless the reproduction number can be reduced below 1 in all regions, small outbreaks may continue to occur in South Korea.
 
 \section*{Contribution}
