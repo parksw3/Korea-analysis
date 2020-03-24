@@ -86,18 +86,18 @@ This article does not necessarily represent the views of the NIH or the US gover
 \section*{Abstract - 75 word limit; currently 70.}
 
 On January 20, 2020, the first COVID-19 case was confirmed in South Korea.
-As of March 18, 2020, 8,413 cases were confirmed but the number of cases has been consistently decreasing;
-the reason for the decrease has been widely attributed to its intensive testing.
-We report on the potential roles of social distancing in reducing transmission in South Korea.
-Our analysis suggests that transmission may still persist in some regions.
+After a rapid outbreak, the number of incident cases has been consistently decreasing since XX Feb/Mar;
+this decrease has been widely attributed to its intensive testing.
+We report here on the likely role of social distancing in reducing transmission in South Korea.
+Our analysis suggests that transmission may still be persisting in some regions.
 
 \pagebreak
 
-Since its first appearance in Wuhan, China, in December 2019 \citep{pneumonia}, the novel coronavirus disease (COVID-19) has spread internationally, including to South Korea.
+Since its first appearance in Wuhan, China, in December 2019 \citep{pneumonia}, COVID-19 disease has spread internationally, including to South Korea.
 The first COVID-19 case in South Korea was confirmed on January 20, 2020, from a traveling resident of Wuhan, China \citep{kcdc}.
-In February, the disease spread rapidly within a church in the city of Daegu.
+In February, the disease spread rapidly within a church community in the city of Daegu.
 The chains of transmission that began from this cluster distinguish the epidemic in South Korea from that in any other countries:
-As of March 18, 2020, 8,413 cases were confirmed, of which 60\% were related to the church and 27\% were in their 20's \citep{kcdc}.
+As of March 18, 2020, 8,413 cases were confirmed, of which 60\% were related to the church and 27\% were in their 20s \citep{kcdc}.
 Nonetheless, South Korea's intensive testing using novel contact tracing techniques allowed rapid identification and isolation cases and reduction of onward transmission \citep{fergusonimpact, tracingkorea, science}.
 Here, we describe potential roles of social distancing in mitigating the spread of COVID-19 by using metro traffic data to compare epidemics in two geographically separated major cities in South Korea.
 
@@ -119,11 +119,12 @@ Vertical lines indicate Feb 18, 2020, when the first case was confirmed in Daegu
 \label{fig:data}
 \end{figure}
 
-We compared epidemiological dynamics of COVID-19 from two cities in which the biggest number of COVID-19 cases have been reported: Daegu and Seoul.
+We compared epidemiological dynamics of COVID-19 from two cities in which the largest number of COVID-19 cases have been reported: Daegu and Seoul.
 Between January 20--March 16, 2020, 6,083 cases from Daegu and 248 from Seoul were reported by the KCDC (Supplementary Materials).
 Unlike the epidemic in Daegu, which is characterized by a single, large peak followed by a gradual decrease, the epidemic in Seoul consists of several small outbreaks (\fref{data}).
 
 Daily metro traffic in Daegu and Seoul between 2017--2020 was obtained from \url{data.go.kr} and \url{data.seoul.go.kr}, respectively.
+\jd{Clarify a tiny bit:}
 We tabulated the total number of individuals who accessed subway or monorail (\fref{data});
 we restricted our analysis to subway lines 1--9 in Seoul.
 Soon after the first church-related case was confirmed in Daegu on Feb 18, 2020, the daily traffic volume decreased by about 80\% and 50\% in Daegu and Seoul, respectively.
@@ -144,10 +145,13 @@ Black lines and gray ribbons represent the median estimates of the mean delays a
 \label{fig:dist}
 \end{figure}
 
-In order to estimate the time-dependent reproduction number $R_t$ (i.e., the expected number of secondary cases caused by an individual infected at time $t$ \citep{fraser2007estimating}), we reconstructed the incidence time series (i.e., the number of infected individuals on each day) from the daily number of reported cases by the KCDC \citep{kcdc}.
-We first adjusted the number of reported cases to account for changes in testing criteria (\fref{dist}), which occurred 4 times between January 20--March 16, 2020, as well as changes in the number of tests (Supplementary Materials).
+\jd{Grey ribbons should still be lighter; we want eyes drawn first to the estimate.}
+
+We estimated the time-dependent reproduction number $R_t$ (the average number of secondary cases caused by an individual infected at time $t$ \citep{fraser2007estimating}), we estimated daily incidence of infection  from the daily number of reported cases by the KCDC \citep{kcdc}.
+We adjusted the number of reported cases to account for changes in testing criteria (\fref{dist}), which occurred 4 times between January 20--March 16, 2020 and changes in the number of tests (Supplementary Materials).
 A sensitivity analysis showed that qualitative patterns of inferred $R_t$ are robust to these adjustments.
 
+\jd{Need to discuss how to present this; we don't want it to get in the way.}
 We then estimated time-dependent \emph{backward} confirmation-to-onset delay distributions from the partial line list using a negative-binomial regression with the \texttt{brms} package \citep{burkner2017brms} (\fref{dist}C).
 We combined the estimated posterior distribution of delay distributions with previously estimated incubation period distribution (Table 1) to obtain posterior samples for date of infection for each confirmed case.
 Likewise, we estimated time-dependent \emph{forward} onset-to-confirmation delay distribution using the same negative-binomial regression model, while accounting for right-censoring (\fref{dist}D),
@@ -175,13 +179,15 @@ Priors are chosen such that the 95\% quantiles of prior means and standard devia
 }
 \end{table}
 
-For each posterior sample of the reconstructed incidence time series, we divided daily incidence by the probability that they would have been reported before March 16, 2020, and estimated the time-dependent reproduction number using the renewal equation with a 14-day sliding window \citep{fraser2007estimating}:
+\jd{This looks like backward R, which is fine, but not what we said we would do.}
+For each posterior sample of the reconstructed incidence time series, we divided daily incidence by the probability that they would have been reported before March 16, 2020, \jd{Can't we make this correction part of the reconstruction step?} and estimated the time-dependent reproduction number using the renewal equation with a 14-day sliding window \citep{fraser2007estimating}:
 \begin{equation}
 \mathcal R_t = \frac{I_t}{\sum_{k=1}^{14} I_{t-k} w_k},
 \end{equation}
 where $I_t$ is the censoring-adjusted incidence time series and $w_k$ is the generation-interval distribution randomly drawn from a prior distribution (Table 1).
 We weighted each sample of $\mathcal R_t$ by a gamma probability distribution with a mean of 2.6 and a standard deviation of 2 to reflect prior knowledge \citep{tempvar} and took weighted quantiles to calculate the medians and associated 95\% credible intervals.
-We restricted the calculation of $\mathcal R_t$ between February 2, 2020 (14 days after the first confirmed case was imported) and March 10, 2020 (because the degree of censoring would be too large after this date to estimate $\mathcal R_t$).
+\jd{Is this in fact good? Would smoothing be better?}
+We estimated $\mathcal R_t$ between February 2, 2020 (14 days after the first confirmed case was imported) and March 10, 2020 (after this point the effects of censoring are too strong for reliable estimates).
 
 \begin{figure}[!ht]
 \includegraphics[width=\textwidth]{figure_compare_R_t.pdf}
