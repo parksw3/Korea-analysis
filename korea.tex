@@ -124,9 +124,7 @@ Between January 20--March 16, 2020, 6,083 cases from Daegu and 248 from Seoul we
 Unlike the epidemic in Daegu, which is characterized by a single, large peak followed by a gradual decrease, the epidemic in Seoul consists of several small outbreaks (\fref{data}).
 
 Daily metro traffic in Daegu and Seoul between 2017--2020 was obtained from \url{data.go.kr} and \url{data.seoul.go.kr}, respectively.
-\jd{Clarify a tiny bit:}
-We tabulated the total number of individuals who accessed subway or monorail (\fref{data});
-we restricted our analysis to subway lines 1--9 in Seoul.
+We tabulated the total number of individuals who accessed the subway or monorail (\fref{data}) (using Seoul lines 1--9, and Daegu lines 1--3).
 Soon after the first church-related case was confirmed in Daegu on Feb 18, 2020, the daily traffic volume decreased by about 80\% and 50\% in Daegu and Seoul, respectively.
 
 %% https://www.data.go.kr/dataset/15002503/fileData.do
@@ -151,7 +149,7 @@ We estimated the time-dependent reproduction number $R_t$ (the average number of
 We adjusted the number of reported cases to account for changes in testing criteria (\fref{dist}), which occurred 4 times between January 20--March 16, 2020 and changes in the number of tests (Supplementary Materials).
 A sensitivity analysis showed that qualitative patterns of inferred $R_t$ are robust to these adjustments.
 
-\jd{Need to discuss how to present this; we don't want it to get in the way.}
+\jd{Daniel to move, me to clean up both text and supp.}
 We then estimated time-dependent \emph{backward} confirmation-to-onset delay distributions from the partial line list using a negative-binomial regression with the \texttt{brms} package \citep{burkner2017brms} (\fref{dist}C).
 We combined the estimated posterior distribution of delay distributions with previously estimated incubation period distribution (Table 1) to obtain posterior samples for date of infection for each confirmed case.
 Likewise, we estimated time-dependent \emph{forward} onset-to-confirmation delay distribution using the same negative-binomial regression model, while accounting for right-censoring (\fref{dist}D),
@@ -179,14 +177,13 @@ Priors are chosen such that the 95\% quantiles of prior means and standard devia
 }
 \end{table}
 
-\jd{This looks like backward R, which is fine, but not what we said we would do.}
-For each posterior sample of the reconstructed incidence time series, we divided daily incidence by the probability that they would have been reported before March 16, 2020, \jd{Can't we make this correction part of the reconstruction step?} and estimated the time-dependent reproduction number using the renewal equation with a 14-day sliding window \citep{fraser2007estimating}:
+\jd{Me to change backward/forward R description above, Daniel to approve.}
+For each posterior sample of the reconstructed incidence time series, we divided daily incidence by the probability that they would have been reported before March 16, 2020, \jd{Make this correction part of the reconstruction step?} and estimated the time-dependent reproduction number using the renewal equation with a 14-day sliding window \citep{fraser2007estimating}:
 \begin{equation}
 \mathcal R_t = \frac{I_t}{\sum_{k=1}^{14} I_{t-k} w_k},
 \end{equation}
 where $I_t$ is the censoring-adjusted incidence time series and $w_k$ is the generation-interval distribution randomly drawn from a prior distribution (Table 1).
 We weighted each sample of $\mathcal R_t$ by a gamma probability distribution with a mean of 2.6 and a standard deviation of 2 to reflect prior knowledge \citep{tempvar} and took weighted quantiles to calculate the medians and associated 95\% credible intervals.
-\jd{Is this in fact good? Would smoothing be better?}
 We estimated $\mathcal R_t$ between February 2, 2020 (14 days after the first confirmed case was imported) and March 10, 2020 (after this point the effects of censoring are too strong for reliable estimates).
 
 \begin{figure}[!ht]
