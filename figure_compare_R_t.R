@@ -7,7 +7,27 @@ library(readxl)
 source("wquant.R")
 
 load("R_t_daegu_censor.rda")
+
+reconstruct_daegu <- reconstruct_censor %>%
+  bind_rows(.id="sim") %>%
+  group_by(date) %>%
+  summarize(
+    median=median(case),
+    lwr=quantile(case, 0.025),
+    upr=quantile(case, 0.975)
+  )
+
 load("R_t_seoul_censor.rda")
+
+reconstruct_seoul <- reconstruct_censor %>%
+  bind_rows(.id="sim") %>%
+  group_by(date) %>%
+  summarize(
+    median=median(case),
+    lwr=quantile(case, 0.025),
+    upr=quantile(case, 0.975)
+  )
+
 load("traffic_daegu.rda")
 load("traffic_seoul.rda")
 
@@ -134,7 +154,43 @@ cor.test(daegu_merge$median, daegu_merge$traffic)
 seoul_merge <- merge(rt_seoul, seoul_traffic)
 cor.test(seoul_merge$median, seoul_merge$traffic)
 
-g1 <- ggplot(rt_daegu) +
+g1 <- ggplot(reconstruct_daegu) +
+  geom_bar(data=daegu, aes(date_report, cases), stat="identity", alpha=0.3) +
+  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
+  geom_line(aes(date, median), lwd=1) +
+  geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
+  scale_color_manual(values=c(1, 2, 4)) +
+  scale_fill_manual(values=c(1, 2, 4)) +
+  scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,1)) +
+  scale_y_continuous("Reconstructed incidence", expand=c(0, 0)) +
+  ggtitle("A. Daegu") +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line(),
+    legend.position = "none",
+    legend.title = element_blank()
+  )
+
+g2 <- ggplot(reconstruct_seoul) +
+  geom_bar(data=seoul, aes(date_report, cases), stat="identity", alpha=0.3) +
+  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
+  geom_line(aes(date, median), lwd=1) +
+  geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
+  scale_color_manual(values=c(1, 2, 4)) +
+  scale_fill_manual(values=c(1, 2, 4)) +
+  scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,1)) +
+  scale_y_continuous("Reconstructed incidence", expand=c(0, 0)) +
+  ggtitle("B. Seoul") +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line(),
+    legend.position = "none",
+    legend.title = element_blank()
+  )
+
+g3 <- ggplot(rt_daegu) +
   # geom_bar(data=daegu, aes(date_report, cases/max(daegu$cases)), stat="identity", alpha=0.3) + 
   geom_hline(yintercept=6, lty=2, col=2) + 
   geom_line(data=daegu_traffic, aes(date, traffic*6), col=2) +
@@ -147,7 +203,7 @@ g1 <- ggplot(rt_daegu) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
   scale_y_continuous("Effective reproduction number", limits=c(0, 8), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*1/6, name = "(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)")) +
-  ggtitle("A. Daegu") +
+  ggtitle("C. Daegu") +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
@@ -160,7 +216,7 @@ g1 <- ggplot(rt_daegu) +
     axis.text.y.right = element_text(color="red")
   )
 
-g2 <- ggplot(rt_seoul) +
+g4 <- ggplot(rt_seoul) +
   # geom_bar(data=seoul, aes(date_report, cases/12), stat="identity", alpha=0.3) + 
   geom_hline(yintercept=6, lty=2, col=2) + 
   geom_line(data=seoul_traffic, aes(date, traffic*6), col=2) +
@@ -169,7 +225,7 @@ g2 <- ggplot(rt_seoul) +
   geom_hline(yintercept=1, lty=2) + 
   geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
-  ggtitle("B. Seoul") +
+  ggtitle("D. Seoul") +
   scale_y_continuous("Effective reproduction number", limits=c(0, 8), expand=c(0, 0),
                      sec.axis = sec_axis(~ ./6, name = "(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)")) +
   theme(
@@ -184,6 +240,6 @@ g2 <- ggplot(rt_seoul) +
     axis.text.y.right = element_text(color="red")
   )
 
-gtot <- arrangeGrob(g1, g2, nrow=1, widths=c(1.1, 1))
+gtot <- arrangeGrob(g1, g2, g3, g4, nrow=2, widths=c(1.1, 1))
 
-ggsave("figure_compare_R_t.pdf", gtot, width=8, height=4.5)
+ggsave("figure_compare_R_t.pdf", gtot, width=8, height=8)

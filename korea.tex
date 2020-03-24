@@ -60,9 +60,9 @@
 \\
 Sang Woo Park\textsuperscript{1,*}
 Kaiyuan Sun\textsuperscript{2}
-C\'ecile Viboud\textsuperscript{2,$\dagger$}
-Bryan T.\ Grenfell\textsuperscript{1,2,3,$\dagger$}
-Jonathan Dushoff\textsuperscript{4,5,6,$\dagger$}
+C\'ecile Viboud\textsuperscript{2}
+Bryan T.\ Grenfell\textsuperscript{1,2,3}
+Jonathan Dushoff\textsuperscript{4,5,6}
 \\
 \bigskip
 \textbf{1} Department of Ecology and Evolutionary Biology, Princeton University, Princeton, NJ, USA
@@ -79,7 +79,6 @@ Jonathan Dushoff\textsuperscript{4,5,6,$\dagger$}
 \\
 \bigskip
 
-$\dagger$These authors contributed equally\\
 *Corresponding author: swp2@princeton.edu\\
 This article does not necessarily represent the views of the NIH or the US government.
 \end{flushleft}
@@ -137,7 +136,7 @@ Black lines and gray ribbons represent the median estimates of the mean delays a
 \label{fig:dist}
 \end{figure}
 
-In order to estimate the time-dependent reproduction number $R_t$ (i.e., the expected number of secondary cases caused by an individual infected at time $t$ \citep{fraser2007estimating}), we reconstructed the incidence time series (i.e., the number of infected individuals on each day).
+In order to estimate the time-dependent reproduction number $R_t$ (i.e., the expected number of secondary cases caused by an individual infected at time $t$ \citep{fraser2007estimating}), we reconstructed the incidence time series (i.e., the number of infected individuals on each day) from the daily number of reported cases by the KCDC \citep{kcdc}.
 We first adjusted the number of reported cases to account for changes in testing criteria (\fref{dist}), which occurred 4 times between January 20--March 16, 2020, as well as changes in the number of tests (Supplementary Materials).
 A sensitivity analysis showed that qualitative patterns of inferred $R_t$ are robust to these adjustments.
 
@@ -179,20 +178,20 @@ We restricted the calculation of $\mathcal R_t$ between February 2, 2020 (14 day
 \begin{figure}[!ht]
 \includegraphics[width=\textwidth]{figure_compare_R_t.pdf}
 \caption{
-\textbf{Comparison of time-dependent reproduction number and normalized traffic in Daegu and Seoul.}
-Black lines and gray ribbons represent the median estimates of $R_t$ and their corresponding 95\% credible intervals.
+\textbf{Comparison of reconstructed incidence and time-dependent reproduction number in Daegu and Seoul.}
+Black lines and gray ribbons represent the median estimates of reconstructed incidence (A,B) and $R_t$ (C,D) and their corresponding 95\% credible intervals.
 Red lines represent the normalized traffic volume.
 Vertical lines indicate Feb 18, 2020, when the first case was confirmed in Daegu.
 }
 \label{fig:eff}
 \end{figure}
 
-\fref{eff} compares the estimates of $\mathcal R_t$ in Daegu and Seoul.
-In Daegu, estimates of $\mathcal R_t$ gradually decrease and eventually drop below 1 about a week after the reporting of its first case, coinciding with the decrease in the metro traffic volume (\fref{eff}A).
-Our estimates of $\mathcal R_t$ for Daegu are consistent with the estimates of $\mathcal R_t$ for South Korea by Abbott \textit{et al.} \cite{tempvar} --- their estimates drop below 1 slightly later because they rely on number of symptomatic cases instead.
-The initial decrease in $\mathcal R_t$ may reflect the possibility that a large proportion of church-related transmission could have occurred much earlier; according to the KCDC press release, the first confirmed case in Daegu became symptomatic on February 7, 2020, and visited the church on February 9 and 16, 2020 \citep{kcdc}.
+\fref{eff} compares the reconstructed incidence (A,B) and estimates of $\mathcal R_t$ (C,D) in Daegu and Seoul.
+In Daegu, estimates of $\mathcal R_t$ gradually decrease and eventually drop below 1 about a week after the reporting of its first case, coinciding with the decrease in the metro traffic volume (\fref{eff}C).
+The initial decrease in $\mathcal R_t$ may reflect the possibility that a large proportion of church-related transmission could have occurred much earlier and therefore caused behavior change within the church; for example, the first confirmed case in Daegu became symptomatic on February 7, 2020, and visited the church on February 9 and 16, 2020 \citep{kcdc}.
+% Our estimates of $\mathcal R_t$ for Daegu are consistent with the estimates of $\mathcal R_t$ for South Korea by Abbott \textit{et al.} \cite{tempvar} --- their estimates drop below 1 slightly later because they rely on number of symptomatic cases instead.
 
-On the other hand, estimates of $\mathcal R_t$ remain around 1 in Seoul (\fref{eff}B);
+On the other hand, estimates of $\mathcal R_t$ remain around 1 in Seoul (\fref{eff}D);
 our analysis suggests that social distancing in Seoul was less intense, and this could be why reduction in spread was less effective.
 Stronger distancing or further intervention will be necessary to reduce $\mathcal R_t$ below 1.
 While we find clear, positive correlations between the normalized traffic and the median estimates of $\mathcal R_t$ in both Daegu ($r=0.87$; 95\% CI: 0.74--0.94) and Seoul ($r=0.55$; 95\% CI: 0.27--0.74), the strength of correlations are likely to be strongly conflated because they do not account for the effects of any other measures that could have affected $\mathcal R_t$;
@@ -212,7 +211,7 @@ In particular, we did not account for differences in the delay distributions or 
 The intensity of intervention is likely to vary across regions given that majority of COVID-19 cases in South Korea were reported from Daegu.
 We did not have the data to account for these factors.
 Nonetheless, the robustness of our findings is supported by the sensitivity analyses.
-We also did not distinguish local and imported cases, which may overestimate $\mathcal R_t$ \citep{thompson2019improved}.
+We also did not distinguish local and imported cases, which may overestimate $\mathcal R_t$ \citep{thompson2019improved}. \swp{The analysis of the Seoul outbreak which accounts for imported cases is presented in Supplementary Materials?}
 
 Our analysis focused on comparing metro traffic, which serves as a proxy for the degree of social distancing, with epidemiological dynamics in two cities.
 This analysis is indirect; we are not able to directly estimate the effect of social distancing on epidemiological dynamics.
@@ -222,7 +221,7 @@ Future studies should consider quantifying contributions of different measures i
 Finally, our study highlights the importance of considering geographical heterogeneity in estimating epidemic potential.
 The recent decrease in the number of reported cases in South Korea is likely to be strongly correlated with the decrease in the number of cases in Daegu.
 Our analysis reveals that the epidemic may still persist in other regions, including Seoul and Gyeonggi-do.
-Persistent reportings of COVID-19 cases in Seoul and Gyeonggi-do (around 10 cases almost everyday) between March 11--22, 2020, provide further support for our analysis \citep{kcdc}.
+Persistent reportings of COVID-19 cases in Seoul and Gyeonggi-do (around 10 cases almost everyday) between March 11--22, 2020, provide further support for our conclusion \citep{kcdc}.
 Unless the reproduction number can be reduced below 1 in all regions, small outbreaks may continue to occur in South Korea.
 
 \section*{Contribution}
