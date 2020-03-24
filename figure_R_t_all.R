@@ -1,11 +1,14 @@
 library(dplyr)
 library(tidyr)
 library(ggplot2); theme_set(theme_bw())
+source("wquant.R")
 
 load("R_t_gyeongbuk_censor.rda")
 load("R_t_daegu_censor.rda")
 load("R_t_seoul_censor.rda")
 load("R_t_gyeonggi_censor.rda")
+
+R0prior <- function(x) dgamma(x, shape=(2.6/2)^2, rate=(2.6/2)^2/2.6)
 
 R_t_all <- bind_rows(
   R_t_daegu_censor %>%
@@ -30,10 +33,11 @@ R_t_all <- bind_rows(
     )
 ) %>%
   group_by(region, date) %>%
+  mutate(weight=R0prior(IRt)) %>%
   summarize(
-    median=median(IRt, na.rm=TRUE),
-    upr=quantile(IRt, 0.975, na.rm=TRUE),
-    lwr=quantile(IRt, 0.025, na.rm=TRUE)
+    median=wquant(IRt, weights=weight,0.5),
+    lwr=wquant(IRt, weights=weight,0.025),
+    upr=wquant(IRt, weights=weight,0.975)
   ) %>%
   ungroup %>%
   mutate(

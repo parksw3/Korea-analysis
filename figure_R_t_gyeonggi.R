@@ -1,17 +1,22 @@
+library(readxl)
 library(ggplot2); theme_set(theme_bw())
 library(gridExtra)
+source("wquant.R")
 
 load("R_t_gyeonggi_censor.rda")
 load("R_t_gyeonggi_censor_detect.rda")
 load("R_t_gyeonggi_censor_raw.rda")
 
+R0prior <- function(x) dgamma(x, shape=(2.6/2)^2, rate=(2.6/2)^2/2.6)
+
 rt_censor <- R_t_gyeonggi_censor %>%
   bind_rows(.id="sim") %>%
   group_by(date) %>%
+  mutate(weight=R0prior(IRt)) %>%
   summarize(
-    median=median(IRt, na.rm=TRUE),
-    lwr=quantile(IRt, 0.025, na.rm=TRUE),
-    upr=quantile(IRt, 0.975, na.rm=TRUE)
+    median=wquant(IRt, weights=weight,0.5),
+    lwr=wquant(IRt, weights=weight,0.025),
+    upr=wquant(IRt, weights=weight,0.975)
   ) %>%
   mutate(
     group="adjusted for detection rate + number of tests"
@@ -20,10 +25,11 @@ rt_censor <- R_t_gyeonggi_censor %>%
 rt_censor_detect <- R_t_gyeonggi_censor_detect %>%
   bind_rows(.id="sim") %>%
   group_by(date) %>%
+  mutate(weight=R0prior(IRt)) %>%
   summarize(
-    median=median(IRt, na.rm=TRUE),
-    lwr=quantile(IRt, 0.025, na.rm=TRUE),
-    upr=quantile(IRt, 0.975, na.rm=TRUE)
+    median=wquant(IRt, weights=weight,0.5),
+    lwr=wquant(IRt, weights=weight,0.025),
+    upr=wquant(IRt, weights=weight,0.975)
   ) %>%
   mutate(
     group="adjusted for detection rate"
@@ -32,10 +38,11 @@ rt_censor_detect <- R_t_gyeonggi_censor_detect %>%
 rt_censor_raw <- R_t_gyeonggi_censor_raw %>%
   bind_rows(.id="sim") %>%
   group_by(date) %>%
+  mutate(weight=R0prior(IRt)) %>%
   summarize(
-    median=median(IRt, na.rm=TRUE),
-    lwr=quantile(IRt, 0.025, na.rm=TRUE),
-    upr=quantile(IRt, 0.975, na.rm=TRUE)
+    median=wquant(IRt, weights=weight,0.5),
+    lwr=wquant(IRt, weights=weight,0.025),
+    upr=wquant(IRt, weights=weight,0.975)
   ) %>%
   mutate(
     group="raw"
@@ -122,14 +129,14 @@ g2 <- ggplot(rt_all) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 25), expand=c(0, 0)) +
+  scale_y_continuous("Effective reproduction number", limits=c(0, 8), expand=c(0, 0)) +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.line = element_line(),
     legend.position = "none",
     legend.title = element_blank(),
-    plot.margin = margin(5, 32, 5, 20, unit="pt")
+    plot.margin = margin(5, 32, 5, 24, unit="pt")
   )
 
 gtot <- arrangeGrob(g1, g2, nrow=2)

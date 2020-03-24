@@ -88,7 +88,7 @@ This article does not necessarily represent the views of the NIH or the US gover
 
 Since its first appearance in Wuhan, China, in December 2019 \citep{pneumonia}, the novel coronavirus disease (COVID-19) has spread internationally, including to South Korea.
 The first COVID-19 case in South Korea was confirmed on January 20, 2020, from a traveling resident of Wuhan, China \citep{kcdc}.
-The epidemic then took off in mid-February when COVID-19 began to spread within a church in the city of Daegu.
+In February, the disease spread rapidly within a church in the city of Daegu.
 The chains of transmission that began from this cluster distinguish the epidemic in South Korea from that in any other countries:
 As of March 18, 2020, 8,413 cases were confirmed, of which 60\% were related to the church and 27\% were in their 20's \citep{kcdc}.
 Nonetheless, South Korea's intensive testing using novel contact tracing techniques allowed rapid identification and isolation cases and reduction of onward transmission \citep{fergusonimpact, tracingkorea, science}.
@@ -138,11 +138,8 @@ Black lines and gray ribbons represent the median estimates of the mean delays a
 \end{figure}
 
 In order to estimate the time-dependent reproduction number $R_t$ (i.e., the expected number of secondary cases caused by an individual infected at time $t$ \citep{fraser2007estimating}), we reconstructed the incidence time series (i.e., the number of infected individuals on each day).
-First, we accounted for changes in testing criteria, which occurred 4 times between January 20--March 16, 2020, by assuming that the proportion positive should remain roughly constant if we follow a consistent protocol of identifying and deciding whom to test.
-To do so, we calculated the relative proportion of positive cases during each period (divided by the the between-period mean) and multiplied the daily number of reported cases by the relative proportions of the corresponding criterion.
-Likewise, we accounted for changes in the number of tests completed on each day (\fref{dist}A) by dividing the scaled number of reported cases by the relative number of tests completed on each day; this step was performed separately for each testing criterion because widening of criteria necessarily increases the number of tests.
-The number of negative cases was not reported on January 25 and 31, 2020; we took the average of cumulative negative cases from one day before and after these dates instead to impute missing values.
-A sensitivity analysis showed that qualitative patterns of inferred $R_t$ are robust to these adjustments (Supplementary Materials).
+We first adjusted the number of reported cases to account for changes in testing criteria (\fref{dist}), which occurred 4 times between January 20--March 16, 2020, as well as changes in the number of tests (Supplementary Materials).
+A sensitivity analysis showed that qualitative patterns of inferred $R_t$ are robust to these adjustments.
 
 We then estimated time-dependent \emph{backward} confirmation-to-onset delay distributions from the partial line list using a negative-binomial regression with the \texttt{brms} package \citep{burkner2017brms} (\fref{dist}C).
 We combined the estimated posterior distribution of delay distributions with previously estimated incubation period distribution (Table 1) to obtain posterior samples for date of infection for each confirmed case.
@@ -176,6 +173,7 @@ For each posterior sample of the reconstructed incidence time series, we divided
 \mathcal R_t = \frac{I_t}{\sum_{k=1}^{14} I_{t-k} w_k},
 \end{equation}
 where $I_t$ is the censoring-adjusted incidence time series and $w_k$ is the generation-interval distribution randomly drawn from a prior distribution (Table 1).
+We weighted each sample of $\mathcal R_t$ by a gamma probability distribution with a mean of 2.6 and a standard deviation of 2 to reflect prior knowledge \citep{tempvar} and took weighted quantiles to calculate the medians and associated 95\% credible intervals.
 We restricted the calculation of $\mathcal R_t$ between February 2, 2020 (14 days after the first confirmed case was imported) and March 10, 2020 (because the degree of censoring would be too large after this date to estimate $\mathcal R_t$).
 
 \begin{figure}[!ht]
@@ -197,7 +195,7 @@ The initial decrease in $\mathcal R_t$ may reflect the possibility that a large 
 On the other hand, estimates of $\mathcal R_t$ remain around 1 in Seoul (\fref{eff}B);
 our analysis suggests that social distancing in Seoul was less intense, and this could be why reduction in spread was less effective.
 Stronger distancing or further intervention will be necessary to reduce $\mathcal R_t$ below 1.
-While we find clear, positive correlations between the normalized traffic and the median estimates of $\mathcal R_t$ in both Daegu ($r=0.87$; 95\% CI: 0.74--0.94) and Seoul ($r=0.49$; 95\% CI: 0.20--0.70), the strength of correlations are likely to be strongly conflated because they do not account for the effects of any other measures that could have affected $\mathcal R_t$;
+While we find clear, positive correlations between the normalized traffic and the median estimates of $\mathcal R_t$ in both Daegu ($r=0.87$; 95\% CI: 0.74--0.94) and Seoul ($r=0.55$; 95\% CI: 0.27--0.74), the strength of correlations are likely to be strongly conflated because they do not account for the effects of any other measures that could have affected $\mathcal R_t$;
 we do not find any signatures of lags (Supplementary Materials).
 Similar patterns in the estimates of $\mathcal R_t$ are found in directly surrounding provinces (Gyeongsangbuk-do and Gyeonggi-do), providing support for the robustness of our analysis (Supplementary Materials).
 
@@ -212,7 +210,7 @@ Our study is not without limitations.
 In particular, we did not account for differences in the delay distributions or changes in the number of tests among cities.
 The intensity of intervention is likely to vary across regions given that majority of COVID-19 cases in South Korea were reported from Daegu.
 We did not have the data to account for these factors.
-We also did not distinguish the differences between local and imported cases, which may overestimate $\mathcal R_t$.
+We also did not distinguish local and imported cases, which may overestimate $\mathcal R_t$.
 Nonetheless, the robustness of our findings is supported by the sensitivity analyses.
 
 Our analysis focused on comparing metro traffic, which serves as a proxy for the degree of social distancing, with epidemiological dynamics in two cities.
@@ -242,10 +240,19 @@ Data collection: SWP; conceptualization: SWP, CV; analysis: SWP; first draft: SW
 
 \subsection*{Epidemiological data}
 
-The daily number of reported cases from each region was translated and trascribed from the KCDC press release.
+The daily number of reported cases from each region was translated and transcribed from the KCDC press release \citep{kcdc}.
+Following the KCDC's protocol, the daily number of reported cases prior to February 20, 2020, reflects the number of confirmed cases on each day.
+Between February 21 -- March 1, 2020, the daily number of reported cases reflects the number of reported cases within the last 24 hours (9 AM to 9 AM).
+On March 2, 2020, the daily number of reported cases reflects the number of cases that were reported between 9 AM March 1, 2020, and 12 AM March 2, 2020.
+Since then, the daily number of reported cases reflects the number of reported cases within the last 24 hours (12 AM to 12 AM).
+The daily number of reported cases by the KCDC may be different from the reports by each city's government as some cases may be transferred after they are confirmed.
 
-;
-the reported number of cases by each city's government may be different as some cases may be transferred after they are confirmed.
+\subsection*{Time series adjustments}
+
+First, we accounted for changes in testing criteria, which occurred 4 times between January 20--March 16, 2020, by assuming that the proportion positive should remain roughly constant if we follow a consistent protocol of identifying and deciding whom to test.
+To do so, we calculated the relative proportion of positive cases during each period (divided by the the between-period mean) and multiplied the daily number of reported cases by the relative proportions of the corresponding criterion.
+Likewise, we accounted for changes in the number of tests completed on each day by dividing the scaled number of reported cases by the relative number of tests completed on each day; this step was performed separately for each testing criterion because widening of criteria necessarily increases the number of tests.
+The number of negative cases was not reported on January 25 and 31, 2020; we took the average of cumulative negative cases from one day before and after these dates instead to impute missing values.
 
 \subsection*{Estimating delay distributions between onset and reporting}
 

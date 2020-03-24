@@ -15,7 +15,7 @@ covid_test <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=2)
 covid_test$negative[7] <- (covid_test$negative[6]+covid_test$negative[8])/2
 covid_test$negative[13] <- (covid_test$negative[12]+covid_test$negative[14])/2
 
-covid_line <- read_xlsx("data/COVID19-Korea-2020-03-13.xlsx", na="NA") %>%
+covid_line <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA") %>%
   mutate(
     age=as.numeric(age),
     date_onset=as.Date(date_onset)
@@ -23,7 +23,7 @@ covid_line <- read_xlsx("data/COVID19-Korea-2020-03-13.xlsx", na="NA") %>%
 
 casenum <- covid_line$case[!is.na(covid_line$case)]
 
-covid_seoul <- read_xlsx("data/COVID19-Korea-Regional-2020-03-13.xlsx", sheet=1, na="NA") %>%
+covid_seoul <- read_xlsx("data/COVID19-Korea-Regional-2020-03-16.xlsx", sheet=1, na="NA") %>%
   mutate(
     date_onset=as.Date(date_onset)
   ) %>%
@@ -31,7 +31,7 @@ covid_seoul <- read_xlsx("data/COVID19-Korea-Regional-2020-03-13.xlsx", sheet=1,
     !(case %in% casenum)
   )
 
-covid_chungnam <- read_xlsx("data/COVID19-Korea-Regional-2020-03-13.xlsx", sheet=2, na="NA") %>%
+covid_chungnam <- read_xlsx("data/COVID19-Korea-Regional-2020-03-16.xlsx", sheet=2, na="NA") %>%
   mutate(
     date_onset=as.Date(date_onset)
   ) %>%
@@ -39,7 +39,7 @@ covid_chungnam <- read_xlsx("data/COVID19-Korea-Regional-2020-03-13.xlsx", sheet
     !(case %in% casenum)
   )
 
-covid_busan <- read_xlsx("data/COVID19-Korea-Regional-2020-03-13.xlsx", sheet=3, na="NA") %>%
+covid_busan <- read_xlsx("data/COVID19-Korea-Regional-2020-03-16.xlsx", sheet=3, na="NA") %>%
   mutate(
     date_onset=as.Date(date_onset)
   ) %>%
@@ -47,7 +47,7 @@ covid_busan <- read_xlsx("data/COVID19-Korea-Regional-2020-03-13.xlsx", sheet=3,
     !(case %in% casenum)
   )
 
-covid_gyeongnam <- read_xlsx("data/COVID19-Korea-Regional-2020-03-13.xlsx", sheet=4, na="NA") %>%
+covid_gyeongnam <- read_xlsx("data/COVID19-Korea-Regional-2020-03-16.xlsx", sheet=4, na="NA") %>%
   mutate(
     date_onset=as.Date(date_onset)
   ) %>%
@@ -63,9 +63,9 @@ covid_delay <- covid_all %>%
     delay=yday(date_confirm)-yday(date_onset),
     day=yday(date_onset),
     day=day-min(day),
-    absmax=yday(as.Date("2020-03-11"))-yday(date_onset)
+    absmax=yday(as.Date("2020-03-16"))-yday(date_onset)
   ) %>%
-  filter(yday(date_confirm) <= yday(as.Date("2020-03-11")))
+  filter(yday(date_confirm) <= yday(as.Date("2020-03-16")))
 
 covid_delay2 <- covid_delay %>%
   group_by(date_onset) %>%
@@ -74,7 +74,7 @@ covid_delay2 <- covid_delay %>%
     max=max(delay),
     min=min(delay),
     size=length(delay),
-    absmax=yday(as.Date("2020-03-11"))-yday(unique(date_onset))
+    absmax=yday(as.Date("2020-03-16"))-yday(unique(date_onset))
   ) 
 
 ## need to hack this to predict ugh
@@ -84,7 +84,7 @@ mm <- brm(delay~s(day),
           chains=1, iter=2)
 
 covid_delay_fake <- data.frame(
-  day=0:60,
+  day=0:66,
   delay=1
 )
 
@@ -103,7 +103,7 @@ estmean <- sapply(1:length(ee$Intercept), function(i) {
 })
 
 estdata <- data.frame(
-  date=seq.Date(from=as.Date("2020-01-10"), to=as.Date("2020-03-10"), by=1),
+  date=seq.Date(from=as.Date("2020-01-10"), to=as.Date("2020-03-16"), by=1),
   median=apply(estmean, 1, median),
   lwr=apply(estmean, 1, quantile, 0.025),
   upr=apply(estmean, 1, quantile, 0.975)
@@ -117,7 +117,7 @@ covid_delay3 <- covid_all %>%
     day=yday(date_confirm),
     day=day-min(day)
   ) %>%
-  filter(yday(date_confirm) <= yday(as.Date("2020-03-11")))
+  filter(yday(date_confirm) <= yday(as.Date("2020-03-16")))
 
 covid_delay_fake2 <- data.frame(
   day=covid_delay3$day[covid_delay3$date_confirm==as.Date("2020-01-20")]:56,

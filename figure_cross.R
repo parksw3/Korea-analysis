@@ -4,14 +4,11 @@ library(lubridate)
 library(dplyr)
 library(tidyr)
 library(readxl)
-source("wquant.R")
 
 load("R_t_daegu_censor.rda")
 load("R_t_seoul_censor.rda")
 load("traffic_daegu.rda")
 load("traffic_seoul.rda")
-
-R0prior <- function(x) dgamma(x, shape=(2.6/2)^2, rate=(2.6/2)^2/2.6)
 
 geo <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3) %>%
   mutate(
@@ -67,11 +64,10 @@ traffic_daegu4 <- dplyr::select(ungroup(filter(traffic_daegu,year==2020)), -월,
 rt_daegu <- R_t_daegu_censor %>%
   bind_rows(.id="sim") %>%
   group_by(date) %>%
-  mutate(weight=R0prior(IRt)) %>%
   summarize(
-    median=wquant(IRt, weights=weight,0.5),
-    lwr=wquant(IRt, weights=weight,0.025),
-    upr=wquant(IRt, weights=weight,0.975),
+    median=median(IRt, na.rm=TRUE),
+    lwr=quantile(IRt, 0.025, na.rm=TRUE),
+    upr=quantile(IRt, 0.975, na.rm=TRUE),
     location="Daegu"
   )
 
@@ -115,11 +111,10 @@ traffic_seoul4 <- ungroup(filter(traffic_seoul,year==2020)) %>%
 rt_seoul <- R_t_seoul_censor %>%
   bind_rows(.id="sim") %>%
   group_by(date) %>%
-  mutate(weight=R0prior(IRt)) %>%
   summarize(
-    median=wquant(IRt, weights=weight,0.5),
-    lwr=wquant(IRt, weights=weight,0.025),
-    upr=wquant(IRt, weights=weight,0.975),
+    median=median(IRt, na.rm=TRUE),
+    lwr=quantile(IRt, 0.025, na.rm=TRUE),
+    upr=quantile(IRt, 0.975, na.rm=TRUE),
     location="Seoul"
   )
 
@@ -128,62 +123,50 @@ seoul_traffic <- data.frame(
   traffic=traffic_seoul4$total/((traffic_seoul1$total + traffic_seoul2$total + traffic_seoul3$total)/3)
 )
 
-daegu_merge <- merge(rt_daegu, daegu_traffic)
-cor.test(daegu_merge$median, daegu_merge$traffic)
+c1 <- ccf(
+  filter(daegu_traffic, date >= as.Date("2020-02-02"))$traffic,
+  filter(rt_daegu, date <= as.Date("2020-02-29"))$median
+)
 
-seoul_merge <- merge(rt_seoul, seoul_traffic)
-cor.test(seoul_merge$median, seoul_merge$traffic)
+c2 <- ccf(
+  filter(seoul_traffic, date >= as.Date("2020-02-02"))$traffic,
+  filter(rt_seoul, date <= as.Date("2020-02-29"))$median
+)
 
-g1 <- ggplot(rt_daegu) +
-  # geom_bar(data=daegu, aes(date_report, cases/max(daegu$cases)), stat="identity", alpha=0.3) + 
-  geom_hline(yintercept=6, lty=2, col=2) + 
-  geom_line(data=daegu_traffic, aes(date, traffic*6), col=2) +
-  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
-  geom_line(aes(date, median), lwd=1) +
-  geom_hline(yintercept=1, lty=2) + 
-  geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
-  scale_color_manual(values=c(1, 2, 4)) +
-  scale_fill_manual(values=c(1, 2, 4)) +
-  scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 8), expand=c(0, 0),
-                     sec.axis = sec_axis(~ .*1/6, name = "(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)")) +
+c1data <- data.frame(
+  lag=c(c1$lag),
+  ccf=c(c1$acf)
+)
+
+c2data <- data.frame(
+  lag=c(c2$lag),
+  ccf=c(c2$acf)
+)
+
+g1 <- ggplot(c1data) +
+  geom_bar(aes(lag, ccf), stat="identity", fill=NA, col=1) +
+  xlab("Lag (days)") +
+  ylab("Cross correlation") +
   ggtitle("A. Daegu") +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.line = element_line(),
-    legend.position = "none",
-    legend.title = element_blank(),
-    axis.line.y.right = element_line(color="red"),
-    axis.ticks.y.right = element_line(color="red"),
-    axis.title.y.right = element_text(color="red"),
-    axis.text.y.right = element_text(color="red")
+    legend.position = c(0.87, 0.83)
   )
 
-g2 <- ggplot(rt_seoul) +
-  # geom_bar(data=seoul, aes(date_report, cases/12), stat="identity", alpha=0.3) + 
-  geom_hline(yintercept=6, lty=2, col=2) + 
-  geom_line(data=seoul_traffic, aes(date, traffic*6), col=2) +
-  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
-  geom_line(aes(date, median), lwd=1) +
-  geom_hline(yintercept=1, lty=2) + 
-  geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
-  scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
+g2 <- ggplot(c2data) +
+  geom_bar(aes(lag, ccf), stat="identity", fill=NA, col=1) +
+  xlab("Lag (days)") +
+  ylab("Cross correlation") +
   ggtitle("B. Seoul") +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 8), expand=c(0, 0),
-                     sec.axis = sec_axis(~ ./6, name = "(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)")) +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.line = element_line(),
-    legend.position = "none",
-    legend.title = element_blank(),
-    axis.line.y.right = element_line(color="red"),
-    axis.ticks.y.right = element_line(color="red"),
-    axis.title.y.right = element_text(color="red"),
-    axis.text.y.right = element_text(color="red")
+    legend.position = c(0.87, 0.83)
   )
 
-gtot <- arrangeGrob(g1, g2, nrow=1, widths=c(1.1, 1))
+gtot <- arrangeGrob(g1, g2, nrow=1)
 
-ggsave("figure_compare_R_t.pdf", gtot, width=8, height=4.5)
+ggsave("figure_cross.pdf", gtot, width=8, height=4)
