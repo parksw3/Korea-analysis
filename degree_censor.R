@@ -1,3 +1,4 @@
+library(dplyr)
 library(rstan)
 
 load("report_delay_censor.rda")
@@ -19,17 +20,19 @@ for (i in 1:length(shape)) {
   ## pgamma(4.2, 25, 25/2.6) - pgamma(1.8, 25, 25/2.6)
   sdinc <- rgamma(1, 25, 25/2.6)
   
+  shapeinc <- meaninc^2/sdinc^2
+  
   meandelay <- estmean[,i]
-  shapedelay <- ee$shape[i]
+  shapedelay <- shape[i]
   
   dd <- data.frame(
-    date=seq.Date(from=as.Date("2020-01-10"), to=as.Date("2020-03-10"), by=1),
+    date=seq.Date(from=as.Date("2020-01-10"), to=as.Date("2020-03-16"), by=1),
     delay=meandelay
   ) %>%
     filter(date >= as.Date("2020-01-19"))
   
   censor <- sapply(1:nrow(dd), function(x) {
-    inc <- floor(rgamma(nsim, shape=shape, rate=shape/meaninc))
+    inc <- floor(rgamma(nsim, shape=shapeinc, rate=shapeinc/meaninc))
     
     symp <- as.Date("2020-01-19")-1+inc+x
     
@@ -42,7 +45,7 @@ for (i in 1:length(shape)) {
   })
   
   degree_censor[[i]] <- data.frame(
-    date=seq.Date(from=as.Date("2020-01-19"), to=as.Date("2020-03-10"), by=1),
+    date=seq.Date(from=as.Date("2020-01-19"), to=as.Date("2020-03-16"), by=1),
     censor=censor
   )
 }
@@ -54,6 +57,7 @@ degree_censor <- degree_censor %>%
     median=median(censor),
     lwr=quantile(censor, 0.025),
     upr=quantile(censor, 0.975)
-  )
+  ) %>%
+  filter(date <= as.Date("2020-03-10"))
 
 save("degree_censor", file="degree_censor.rda")

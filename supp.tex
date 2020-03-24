@@ -17,9 +17,9 @@ The daily number of reported cases by the KCDC may be different from the reports
 Testing criteria expanded 4 times between January 20--March 16, 2020: January 28, February 7, February 20, and March 2, 2020.
 We accounted for these changes by assuming that the proportion positive should remain roughly constant if we follow a consistent protocol of identifying and deciding whom to test.
 To do so, we calculated the relative proportion of positive cases during each period (divided by the the between-period mean) and multiplied the daily number of reported cases by the relative proportions of the corresponding criterion.
-A sensitivity analysis showed that results are robust to these adjustments.
+Sensitivity analyses showed that results are robust to these adjustments.
 
-We then estimated time-dependent \emph{backward} onset-to-confirmation delay distributions from the partial line list. We asked: Given a cohort of individuals who were reported on the same day, what is the probability distribution of the onset-to-confirmation delay?
+We then estimated time-dependent \emph{backward} onset-to-confirmation delay distributions from the partial line list: Given a cohort of individuals who were reported on the same day, what is the probability distribution of the onset-to-confirmation delay?
 The backward delay distribution depends on changes in the number of symptomatic cases ---
 e.g., when the number of symptomatic cases are increasing, the backward delay distribution is likely to be shorter because individuals are more likely to have developed symptoms recently.
 The backward delay distribution was inferred using a negative-binomial regression with log-link using the \texttt{brms} package \citep{burkner2017brms}.
@@ -31,8 +31,7 @@ For each posterior sample of the backward delay distribution, we drew a random s
 This allowed us to obtain posterior samples of possible infection dates for each case,
 which was then converted into posterior samples of incidence time series.
 
-To account for right-censoring in the reported cases, we also estimated time-dependent \emph{forward} onset-to-confirmation delay distribution using the same negative-binomial regression model.
-Here, we asked: Given a cohort of individuals who became symptomatic on the same day, what is the probability distribution of the onset-to-confirmation delay?
+To account for right-censoring in the reported cases, we also estimated time-dependent \emph{forward} onset-to-confirmation delay distribution using the same negative-binomial regression model: Given a cohort of individuals who became symptomatic on the same day, what is the probability distribution of the onset-to-confirmation delay?
 The forward delay distribution reflects the changes in the accuracy of case identification --- e.g., a decrease in the delay reflects improvement in accuracy.
 
 To estimate the forward delay distribution, we modified the stan code from the negative-binomial regression that we used to infer the backward delay distribution to account for right-censoring (in the observed delays) and ran the code using the \texttt{rstan} package \citep{rstan}.
@@ -43,14 +42,7 @@ In particular, we modified the likelihood such that given a delay of $x_i$ days,
 where $f$ is the negative binomial distribution with time-dependent mean $\mu(t_i)$ and dispersion parameter $\theta$. This likelihood accounts for the fact that the delay between symptom onset and confirmation cannot be longer than $k-t_i$ (otherwise, the case will be reported after the date of measurement). Convergence is assessed by the lack of warning messages from the \texttt{rstan} package \citep{rstan}.
 
 For each combination of date of infection and a posterior sample of the forward delay distribution, we drew 1000 samples of incubation periods and onset-to-confirmation delays and calculated the median probability that an individual infected on a given day will be confirmed before March 16, 2020.
-We divided the daily number of 
-
-We combined the forward delay distribution with the , we calculated the median probability that a 
-
-
-
-to calculate the median probability that a case infected on a given day will be reported before March 16, 2020.
-Changes in the mean backward delay (\fref{dist}C) reflect changes in incidence of symptomatic cases, whereas the decrease in the mean forward delay (\fref{dist}D) reflects the improvement in the accuracy of case identification \citep{lai2020effect}.
+Finally, we divided the daily number of infected cases by the median probability that an infected case on a given day will be confirmed before Marh 16, 2020.
 
 \pagebreak
 
