@@ -42,7 +42,7 @@ In particular, we modified the likelihood such that given a delay of $x_i$ days,
 where $f$ is the negative binomial distribution with time-dependent mean $\mu(t_i)$ and dispersion parameter $\theta$. This likelihood accounts for the fact that the delay between symptom onset and confirmation cannot be longer than $k-t_i$ (otherwise, the case will be reported after the date of measurement). Convergence is assessed by the lack of warning messages from the \texttt{rstan} package \citep{rstan}.
 
 For each combination of date of infection and a posterior sample of the forward delay distribution, we drew 1000 samples of incubation periods and onset-to-confirmation delays and calculated the median probability that an individual infected on a given day will be confirmed before March 16, 2020.
-Finally, we divided the daily number of infected cases by the median probability that an infected case on a given day will be confirmed before Marh 16, 2020.
+Finally, we divided the daily number of infected cases by the median probability that an infected case on a given day will be confirmed before March 16, 2020.
 
 \pagebreak
 
@@ -52,7 +52,7 @@ Finally, we divided the daily number of infected cases by the median probability
 \textbf{Changes in the number of tests and delay distributions over time.}
 }
 Vertical lines indicate the date on which testing criteria expanded.
-Boxplots (C--D) represent the observed delays.
+Box plots (C--D) represent the observed delays.
 Black lines and gray ribbons represent the median estimates of the mean delays and their associated 95\% credible intervals.
 \end{figure}
 
@@ -107,5 +107,15 @@ Black lines and gray ribbons represent the median estimates of the mean delays a
 \includegraphics[width=\textwidth]{figure_cross.pdf}
 \caption{
 \textbf{Cross correlation between the normalized traffic volume and the median estimates of $\mathcal R_t$.}
+}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}[!ht]
+\includegraphics[width=\textwidth]{figure_R_t_seoul_linelist.pdf}
+\caption{
+\textbf{Comparison of effective reproduction number in Seoul using the number of reported cases by the KCDC and the line list provided by the Seoul Metropolitan Government.}
+Using line list, we reconstructed incidence for local $I_t^{\textrm{local}}$ and imported $I_t^{\textrm{imported}}$ cases separately based on the method described in the main text. Then, we estimated the time-dependent reproduction number via $\mathcal R_t = I_t^{\textrm{local}}/\sum_{k=1}^{14} I_{t-k} w_k$, where $I_t=I_t^{\textrm{local}}+I_t^{\textrm{imported}}$. We did not account for changes in testing criteria in this analysis.
 }
 \end{figure}
