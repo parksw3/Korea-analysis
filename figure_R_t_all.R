@@ -3,30 +3,30 @@ library(tidyr)
 library(ggplot2); theme_set(theme_bw())
 source("wquant.R")
 
-load("R_t_gyeongbuk_censor.rda")
-load("R_t_daegu_censor.rda")
-load("R_t_seoul_censor.rda")
-load("R_t_gyeonggi_censor.rda")
+load("R_t_gyeongbuk_censor_detect.rda")
+load("R_t_daegu_censor_detect.rda")
+load("R_t_seoul_censor_detect.rda")
+load("R_t_gyeonggi_censor_detect.rda")
 
 R0prior <- function(x) dgamma(x, shape=(2.6/2)^2, rate=(2.6/2)^2/2.6)
 
 R_t_all <- bind_rows(
-  R_t_daegu_censor %>%
+  R_t_daegu_censor_detect %>%
     bind_rows(.id="sim") %>%
     mutate(
       region="Daegu"
     ),
-  R_t_seoul_censor %>%
+  R_t_seoul_censor_detect %>%
     bind_rows(.id="sim") %>%
     mutate(
       region="Seoul"
     ),
-  R_t_gyeongbuk_censor %>%
+  R_t_gyeongbuk_censor_detect %>%
     bind_rows(.id="sim") %>%
     mutate(
       region="Gyeongsangbuk-do"
     ),
-  R_t_gyeonggi_censor %>%
+  R_t_gyeonggi_censor_detect %>%
     bind_rows(.id="sim") %>%
     mutate(
       region="Gyeonggi-do"
