@@ -3,24 +3,10 @@ library(ggplot2); theme_set(theme_bw())
 library(gridExtra)
 source("wquant.R")
 
-load("R_t_seoul_censor.rda")
 load("R_t_seoul_censor_detect.rda")
 load("R_t_seoul_censor_raw.rda")
 
 R0prior <- function(x) dgamma(x, shape=(2.6/2)^2, rate=(2.6/2)^2/2.6)
-
-rt_censor <- R_t_seoul_censor %>%
-  bind_rows(.id="sim") %>%
-  group_by(date) %>%
-  mutate(weight=R0prior(IRt)) %>%
-  summarize(
-    median=wquant(IRt, weights=weight,0.5),
-    lwr=wquant(IRt, weights=weight,0.025),
-    upr=wquant(IRt, weights=weight,0.975)
-  ) %>%
-  mutate(
-    group="adjusted for detection rate + number of tests"
-  )
 
 rt_censor_detect <- R_t_seoul_censor_detect %>%
   bind_rows(.id="sim") %>%
@@ -32,7 +18,7 @@ rt_censor_detect <- R_t_seoul_censor_detect %>%
     upr=wquant(IRt, weights=weight,0.975)
   ) %>%
   mutate(
-    group="adjusted for detection rate"
+    group="adjusted for testing criteria"
   )
 
 rt_censor_raw <- R_t_seoul_censor_raw %>%
@@ -48,28 +34,15 @@ rt_censor_raw <- R_t_seoul_censor_raw %>%
     group="raw"
   )
 
-rt_all <- bind_rows(rt_censor, rt_censor_detect, rt_censor_raw) %>%
+rt_all <- bind_rows(rt_censor_detect, rt_censor_raw) %>%
   mutate(
     group=factor(group, level=c("raw",
-                                "adjusted for detection rate",
-                                "adjusted for detection rate + number of tests"))
+                                "adjusted for testing criteria"))
   )
 
 geo <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3)
 
 geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] <- geo$date_report[geo$time_report==16 & !is.na(geo$time_report)] + 1
-
-reconstruct_case <- reconstruct_censor %>%
-  bind_rows(.id="sim") %>%
-  group_by(date) %>%
-  summarize(
-    median=median(case),
-    lwr=quantile(case, 0.025),
-    upr=quantile(case, 0.975)
-  ) %>%
-  mutate(
-    group="adjusted for detection rate + number of tests"
-  )
 
 reconstruct_case_detect <- reconstruct_censor_detect %>%
   bind_rows(.id="sim") %>%
@@ -80,7 +53,7 @@ reconstruct_case_detect <- reconstruct_censor_detect %>%
     upr=quantile(case, 0.975)
   ) %>%
   mutate(
-    group="adjusted for detection rate"
+    group="adjusted for testing criteria"
   )
 
 reconstruct_case_raw <- reconstruct_censor_raw %>%
@@ -95,11 +68,10 @@ reconstruct_case_raw <- reconstruct_censor_raw %>%
     group="raw"
   )
 
-reconstruct_case_all <- bind_rows(reconstruct_case, reconstruct_case_detect, reconstruct_case_raw) %>%
+reconstruct_case_all <- bind_rows(reconstruct_case_detect, reconstruct_case_raw) %>%
   mutate(
     group=factor(group, level=c("raw",
-                                "adjusted for detection rate",
-                                "adjusted for detection rate + number of tests"))
+                                "adjusted for testing criteria"))
   )
 
 g1 <- ggplot(geo) +
@@ -107,8 +79,8 @@ g1 <- ggplot(geo) +
   geom_ribbon(data=reconstruct_case_all, aes(date, ymin=lwr, ymax=upr, col=group, fill=group, lty=group), alpha=0.3) +
   geom_line(data=reconstruct_case_all, aes(date, median, col=group, lty=group)) +
   geom_vline(xintercept=as.Date("2020-03-10"), lty=2) +
-  scale_color_manual(values=c(1, 2, 4)) +
-  scale_fill_manual(values=c(1, 2, 4)) +
+  scale_color_manual(values=c(2, 1)) +
+  scale_fill_manual(values=c(2, 1)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
   scale_y_continuous("Reconstructed incidence", limits=c(0, 110), expand=c(0, 0),
                      sec.axis = sec_axis(~ ., name = "Daily number of reported cases")) +
@@ -126,8 +98,8 @@ g2 <- ggplot(rt_all) +
   geom_line(aes(date, median, col=group, lty=group)) +
   geom_hline(yintercept=1, lty=2) + 
   geom_vline(xintercept=as.Date("2020-03-10"), lty=2) +
-  scale_color_manual(values=c(1, 2, 4)) +
-  scale_fill_manual(values=c(1, 2, 4)) +
+  scale_color_manual(values=c(2, 1)) +
+  scale_fill_manual(values=c(2, 1)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
   scale_y_continuous("Effective reproduction number", limits=c(0, 8), expand=c(0, 0)) +
   theme(

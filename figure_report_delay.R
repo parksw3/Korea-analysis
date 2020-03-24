@@ -203,10 +203,10 @@ g3 <- ggplot(covid_delay3) +
   # annotate("text", x=as.Date("2020-01-20"), y=23.5, label="Imported cases introduced", angle=90) +
   # geom_vline(xintercept=as.Date("2020-01-19"), col="red", lwd=2) +
   scale_size_area("Number of samples", guide=FALSE, max_size=2) +
-  scale_y_continuous("Confirmation to symptom onset (days)", limit=c(0, 21), expand=c(0, 0)) +
+  scale_y_continuous("Symptom onset to confirmation (days)", limit=c(0, 21), expand=c(0, 0)) +
   scale_x_date("Date of symptom onset", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-16"))+c(0, 0.5)) +
   coord_cartesian(clip = 'off') +
-  ggtitle("C. Backward confirmation-to-onset delay") +
+  ggtitle("C. Backward onset-to-confirmation delay") +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),

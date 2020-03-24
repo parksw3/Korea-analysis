@@ -4,9 +4,12 @@ library(lubridate)
 library(dplyr)
 library(tidyr)
 library(readxl)
+source("wquant.R")
 
-load("R_t_daegu_censor.rda")
-load("R_t_seoul_censor.rda")
+R0prior <- function(x) dgamma(x, shape=(2.6/2)^2, rate=(2.6/2)^2/2.6)
+
+load("R_t_daegu_censor_detect.rda")
+load("R_t_seoul_censor_detect.rda")
 load("traffic_daegu.rda")
 load("traffic_seoul.rda")
 
@@ -61,13 +64,14 @@ traffic_daegu4 <- dplyr::select(ungroup(filter(traffic_daegu,year==2020)), -월,
     date >= as.Date("2020-01-20"), date <= as.Date("2020-02-29")
   )
 
-rt_daegu <- R_t_daegu_censor %>%
+rt_daegu <- R_t_daegu_censor_detect %>%
   bind_rows(.id="sim") %>%
   group_by(date) %>%
+  mutate(weight=R0prior(IRt)) %>%
   summarize(
-    median=median(IRt, na.rm=TRUE),
-    lwr=quantile(IRt, 0.025, na.rm=TRUE),
-    upr=quantile(IRt, 0.975, na.rm=TRUE),
+    median=wquant(IRt, weights=weight,0.5),
+    lwr=wquant(IRt, weights=weight,0.025),
+    upr=wquant(IRt, weights=weight,0.975),
     location="Daegu"
   )
 
@@ -108,13 +112,14 @@ traffic_seoul4 <- ungroup(filter(traffic_seoul,year==2020)) %>%
     date >= as.Date("2020-01-20"), date <= as.Date("2020-03-10")
   )
 
-rt_seoul <- R_t_seoul_censor %>%
+rt_seoul <- R_t_seoul_censor_detect %>%
   bind_rows(.id="sim") %>%
   group_by(date) %>%
+  mutate(weight=R0prior(IRt)) %>%
   summarize(
-    median=median(IRt, na.rm=TRUE),
-    lwr=quantile(IRt, 0.025, na.rm=TRUE),
-    upr=quantile(IRt, 0.975, na.rm=TRUE),
+    median=wquant(IRt, weights=weight,0.5),
+    lwr=wquant(IRt, weights=weight,0.025),
+    upr=wquant(IRt, weights=weight,0.975),
     location="Seoul"
   )
 
