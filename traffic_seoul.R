@@ -5,7 +5,7 @@ library(ggplot2); theme_set(theme_bw())
 library(readxl)
 
 whichfilter <- c("1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선",
-                 "9호선2~3단계", "우이신설선", "9호선2단계")
+                 "9호선2~3단계", "9호선2단계")
 
 ss2020 <- read.csv("seoul_subway/서울시 지하철호선별 역별 승하차 인원 정보.csv", fileEncoding="EUC-KR") 
 

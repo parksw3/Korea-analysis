@@ -60,27 +60,28 @@
 \\
 Sang Woo Park\textsuperscript{1,*}
 Kaiyuan Sun\textsuperscript{2}
-Jonathan Dushoff\textsuperscript{3,4,5,$\dagger$}
-Bryan T.\ Grenfell\textsuperscript{1,2,6,$\dagger$}
 C\'ecile Viboud\textsuperscript{2,$\dagger$}
+Bryan T.\ Grenfell\textsuperscript{1,2,3,$\dagger$}
+Jonathan Dushoff\textsuperscript{4,5,6,$\dagger$}
 \\
 \bigskip
 \textbf{1} Department of Ecology and Evolutionary Biology, Princeton University, Princeton, NJ, USA
 \\
 \textbf{2} Fogarty International Center, National Institutes of Health, Bethesda, MD, USA
 \\
-\textbf{3} Department of Mathematics and Statistics, McMaster University, Hamilton, ON, Canada
+\textbf{3} Woodrow Wilson School of Public and International Affairs, Princeton University, Princeton, NJ, USA
 \\
-\textbf{4} M.\,G.\,DeGroote Institute for Infectious Disease Research, McMaster University, Hamilton, ON, Canada
+\textbf{4} Department of Mathematics and Statistics, McMaster University, Hamilton, ON, Canada
 \\
-\textbf{5} Department of Biology, McMaster University, Hamilton, ON, Canada
+\textbf{5} M.\,G.\,DeGroote Institute for Infectious Disease Research, McMaster University, Hamilton, ON, Canada
 \\
-\textbf{6} Woodrow Wilson School of Public and International Affairs, Princeton University, Princeton, NJ, USA
+\textbf{6} Department of Biology, McMaster University, Hamilton, ON, Canada
 \\
 \bigskip
 
 $\dagger$These authors contributed equally\\
-*Corresponding author: swp2@princeton.edu
+*Corresponding author: swp2@princeton.edu\\
+This article does not necessarily represent the views of the NIH or the US government.
 \end{flushleft}
 
 \pagebreak
@@ -90,12 +91,12 @@ The first COVID-19 case in South Korea was confirmed on January 20, 2020, from a
 The epidemic then took off in mid-February when COVID-19 began to spread within a church in the city of Daegu.
 The chains of transmission that began from this cluster distinguish the epidemic in South Korea from that in any other countries:
 As of March 18, 2020, 8,413 cases were confirmed, of which 60\% were related to the church and 27\% were in their 20's \citep{kcdc}.
-Nonetheless, South Korea's intensive testing using novel tracing techniques allowed it to rapidly identify cases and reduce the spread \citep{fergusonimpact, tracingkorea, science}.
+Nonetheless, South Korea's intensive testing using novel contact tracing techniques allowed rapid identification and isolation cases and reduction of onward transmission \citep{fergusonimpact, tracingkorea, science}.
 Here, we describe potential roles of social distancing in mitigating the spread of COVID-19 by using metro traffic data to compare epidemics in two geographically separated major cities in South Korea.
 
 \section{Data description}
 
-We analyzed epidemiological data, collected between January 20--March 16, 2020, describing the COVID-19 outbreak in South Korea.
+We analyzed epidemiological data describing the COVID-19 outbreak in South Korea between January 20--March 16, 2020.
 Daily number of reported cases in each geographic region was transcribed from press releases by Korea Centers for Disease Control and Prevention (KCDC) \cite{kcdc}.
 Partial line lists were transcribed from press releases from KCDC and various local and provincial governments.
 All data and original reports are stored in a publicly available GitHub repository: \url{https://github.com/parksw3/COVID19-Korea}.
@@ -112,11 +113,12 @@ Vertical lines indicate Feb 18, 2020, when the first case was confirmed in Daegu
 \end{figure}
 
 We compared epidemiological dynamics of COVID-19 from two cities in which the biggest number of COVID-19 cases have been reported: Daegu and Seoul.
-Between January 20--March 16, 2020, 6,083 cases were reported from Daegu and 248 from Seoul.
+Between January 20--March 16, 2020, 6,083 cases from Daegu and 248 from Seoul were reported by the KCDC (Supplementary Materials).
 Unlike the epidemic in Daegu, which is characterized by a single, large peak followed by a gradual decrease, the epidemic in Seoul consists of several small outbreaks (\fref{data}).
 
 Daily metro traffic in Daegu and Seoul between 2017--2020 was obtained from \url{data.go.kr} and \url{data.seoul.go.kr}, respectively.
-We tabulated the total number of individuals who got on the subway or monorail (\fref{data}).
+We tabulated the total number of individuals who accessed subway or monorail (\fref{data});
+we restricted our analysis to subway lines 1--9 in Seoul.
 Soon after the first church-related case was confirmed in Daegu on Feb 18, 2020, the daily traffic volume decreased by about 80\% and 50\% in Daegu and Seoul, respectively.
 
 %% https://www.data.go.kr/dataset/15002503/fileData.do
@@ -202,7 +204,7 @@ Similar patterns in the estimates of $\mathcal R_t$ are found in directly surrou
 \section{Discussion}
 
 The ongoing COVID-19 outbreak in South Korea provides a unique perspective to understanding and controlling the pandemic.
-Its experience provides evidence that the epidemic can be suppressed with less extreme measures than those take by China \citep{kickbusch2020response}.
+Its experience provides evidence that the epidemic can be suppressed with less extreme measures than those taken by China \citep{kickbusch2020response}.
 Our analysis reveals potential roles of social distancing in mitigating the COVID-19 epidemic in South Korea.
 Even though social distancing alone may not be able to fully prevent the spread of the disease, its ability to flatten the epidemic curve (cf. \fref{eff}B) reduces burden for healthcare system and provides time to plan for the future \citep{anderson2020will}.
 
@@ -210,6 +212,7 @@ Our study is not without limitations.
 In particular, we did not account for differences in the delay distributions or changes in the number of tests among cities.
 The intensity of intervention is likely to vary across regions given that majority of COVID-19 cases in South Korea were reported from Daegu.
 We did not have the data to account for these factors.
+We also did not distinguish the differences between local and imported cases, which may overestimate $\mathcal R_t$.
 Nonetheless, the robustness of our findings is supported by the sensitivity analyses.
 
 Our analysis focused on comparing metro traffic, which serves as a proxy for the degree of social distancing, with epidemiological dynamics in two cities.
@@ -236,6 +239,13 @@ Data collection: SWP; conceptualization: SWP, CV; analysis: SWP; first draft: SW
 \setcounter{figure}{0}    
 
 \section*{Supplementary Materials}
+
+\subsection*{Epidemiological data}
+
+The daily number of reported cases from each region was translated and trascribed from the KCDC press release.
+
+;
+the reported number of cases by each city's government may be different as some cases may be transferred after they are confirmed.
 
 \subsection*{Estimating delay distributions between onset and reporting}
 

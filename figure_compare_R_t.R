@@ -131,7 +131,7 @@ cor.test(seoul_merge$median, seoul_merge$traffic)
 
 
 g1 <- ggplot(rt_daegu) +
-  geom_bar(data=daegu, aes(date_report, cases/max(daegu$cases)), stat="identity", alpha=0.3) + 
+  # geom_bar(data=daegu, aes(date_report, cases/max(daegu$cases)), stat="identity", alpha=0.3) + 
   geom_hline(yintercept=6, lty=2, col=2) + 
   geom_line(data=daegu_traffic, aes(date, traffic*6), col=2) +
   geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
@@ -157,7 +157,7 @@ g1 <- ggplot(rt_daegu) +
   )
 
 g2 <- ggplot(rt_seoul) +
-  geom_bar(data=seoul, aes(date_report, cases/12), stat="identity", alpha=0.3) + 
+  # geom_bar(data=seoul, aes(date_report, cases/12), stat="identity", alpha=0.3) + 
   geom_hline(yintercept=6, lty=2, col=2) + 
   geom_line(data=seoul_traffic, aes(date, traffic*6), col=2) +
   geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +

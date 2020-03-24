@@ -152,4 +152,4 @@ g2 <- ggplot(filter(traffic_seoul_all, year==2020)) +
 
 gtot <- arrangeGrob(g1, g2, nrow=1, widths=c(1.1, 1))
 
-ggsave("figure_compare_report.pdf", gtot, width=8, height=4)
+ggsave("figure_compare_report.pdf", gtot, width=8, height=3.5)
