@@ -246,8 +246,10 @@ ggsave("figure_compare_R_t.pdf", gtot, width=8, height=8)
 
 g1 <- ggplot(bind_rows(mutate(daegu_merge, region="Daegu"), mutate(seoul_merge, region="Seoul"))) +
   geom_point(aes(traffic, median, shape=region, col=region), size=3) +
-  scale_x_continuous("Normalized traffic") +
+  scale_x_continuous("(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)") +
   scale_y_continuous("Time-dependent reproduction number") +
+  scale_shape_manual(values=c(21, 22)) +
+  scale_color_manual(values=c("blue", "black")) +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
