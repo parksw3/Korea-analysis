@@ -144,7 +144,7 @@ Soon after the first church-related case was confirmed in Daegu on Feb 18, 2020,
 
 \section{Trends in time-dependent reproduction number and traffic volume}
 
-To estimate the time-dependent reproduction number $R_t$ (the average number of secondary cases caused by an individual infected at time $t$ \citep{fraser2007estimating}), we first estimated daily incidence of infection from the daily number of reported cases by the KCDC \citep{kcdc}.
+To estimate the time-dependent reproduction number $R_t$ (the average number of secondary cases caused by an average individual, given conditions at time $t$ \citep{fraser2007estimating}), we first estimated daily incidence of infection from the daily number of reported cases by the KCDC \citep{kcdc}.
 We adjusted the number of reported cases to account for changes in testing criteria, which occurred 4 times between January 20--March 16, 2020.
 Then, we inferred onset-to-confirmation delay distributions from the partial line list and combined them with previously estimated incubation period distribution (Table 1) to obtain probability distributions for date of infection for each reported case.
 We accounted for right-censoring by dividing the daily incidence by the probability that a case infected on a given day would have been reported before March 16, 2020.
@@ -170,7 +170,6 @@ Priors are chosen such that the 95\% quantiles of prior means and standard devia
 }
 \end{table}
 
-\jd{Me to change backward/forward R description above, Daniel to approve.}
 We estimated the time-dependent reproduction number using the renewal equation with a 14-day sliding window \citep{fraser2007estimating}:
 \begin{equation}
 \mathcal R_t = \frac{I_t}{\sum_{k=1}^{14} I_{t-k} w_k},
@@ -192,12 +191,12 @@ Vertical lines indicate Feb 18, 2020, when the first case was confirmed in Daegu
 \end{figure}
 
 \fref{eff} compares the reconstructed incidence (A,B) and estimates of $\mathcal R_t$ (C,D) in Daegu and Seoul.
-In Daegu, incidence peaked shortly after the first case was confirmed and decreased (\fref{eff}A).
+In Daegu, incidence peaked shortly after the first case was confirmed and then decreased (\fref{eff}A).
 Likewise, the estimates of $\mathcal R_t$ gradually decrease and eventually drop below 1 about a week after the reporting of its first case, coinciding with the decrease in the metro traffic volume (\fref{eff}C).
 The initial decrease in $\mathcal R_t$ may reflect behavior change within the church; the first confirmed case in Daegu became symptomatic on February 7, 2020, and visited the church on February 9 and 16, 2020 \citep{kcdc}.
 
 In Seoul, estimates of $\mathcal R_t$ decreases slightly but remain around 1 (\fref{eff}D).
-Our analysis suggests that social distancing in Seoul was less intense, and this could be why reduction in spread was less effective.
+Our analysis suggests that social distancing in Seoul was less intense, and this could be why reduction in spread was less sharp.
 Stronger distancing or further intervention will be necessary to reduce $\mathcal R_t$ below 1.
 
 While we find clear, positive correlations between the normalized traffic and the median estimates of $\mathcal R_t$ in both Daegu ($r=0.90$; 95\% CI: 0.79--0.95) and Seoul ($r=0.76$; 95\% CI: 0.59--0.87), these correlations are conflated by time trends, and are also likely conflated by other measures that could have affected $\mathcal R_t$ ---
