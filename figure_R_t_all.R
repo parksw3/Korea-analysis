@@ -72,7 +72,7 @@ g1 <- ggplot(filter(R_t_all, region=="Daegu")) +
   geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
   geom_line(aes(date, median)) +
   scale_x_date("Date") +
-  scale_y_continuous("Effective reproduction number", limits=c(0, NA), expand=c(0, 0),
+  scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*150, name = "Number of reported cases")) +
   facet_wrap(~region, scale="free") +
   theme(
@@ -90,7 +90,7 @@ g2 <- ggplot(filter(R_t_all, region=="Gyeongsangbuk-do")) +
   geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
   geom_line(aes(date, median)) +
   scale_x_date("Date") +
-  scale_y_continuous("Effective reproduction number", limits=c(0, NA), expand=c(0, 0),
+  scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*30, name = "Number of reported cases")) +
   facet_wrap(~region, scale="free") +
   theme(
@@ -108,7 +108,7 @@ g3 <- ggplot(filter(R_t_all, region=="Seoul")) +
   geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
   geom_line(aes(date, median)) +
   scale_x_date("Date") +
-  scale_y_continuous("Effective reproduction number", limits=c(0, NA), expand=c(0, 0),
+  scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*8, name = "Number of reported cases")) +
   facet_wrap(~region, scale="free") +
   theme(
@@ -126,7 +126,7 @@ g4 <- ggplot(filter(R_t_all, region=="Gyeonggi-do")) +
   geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
   geom_line(aes(date, median)) +
   scale_x_date("Date") +
-  scale_y_continuous("Effective reproduction number", limits=c(0, NA), expand=c(0, 0),
+  scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*3, name = "Number of reported cases")) +
   facet_wrap(~region, scale="free") +
   theme(

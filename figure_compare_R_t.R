@@ -201,7 +201,7 @@ g3 <- ggplot(rt_daegu) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 8), expand=c(0, 0),
+  scale_y_continuous("Time-dependent reproduction number", limits=c(0, 8), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*1/6, name = "(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)")) +
   ggtitle("C. Daegu") +
   theme(
@@ -226,7 +226,7 @@ g4 <- ggplot(rt_seoul) +
   geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
   ggtitle("D. Seoul") +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 8), expand=c(0, 0),
+  scale_y_continuous("Time-dependent reproduction number", limits=c(0, 8), expand=c(0, 0),
                      sec.axis = sec_axis(~ ./6, name = "(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)")) +
   theme(
     panel.grid = element_blank(),
@@ -243,3 +243,17 @@ g4 <- ggplot(rt_seoul) +
 gtot <- arrangeGrob(g1, g2, g3, g4, nrow=2, widths=c(1.1, 1))
 
 ggsave("figure_compare_R_t.pdf", gtot, width=8, height=8)
+
+g1 <- ggplot(bind_rows(mutate(daegu_merge, region="Daegu"), mutate(seoul_merge, region="Seoul"))) +
+  geom_point(aes(traffic, median, shape=region, col=region), size=3) +
+  scale_x_continuous("Normalized traffic") +
+  scale_y_continuous("Time-dependent reproduction number") +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line(),
+    legend.position = c(0.1, 0.9),
+    legend.title = element_blank()
+  )
+
+ggsave("traffic.pdf", g1, width=6, height=6)

@@ -104,7 +104,7 @@ g2 <- ggplot(rt_all) +
   scale_color_manual(values=c(1, 2)) +
   scale_fill_manual(values=c(1, 2)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
-  scale_y_continuous("Effective reproduction number", limits=c(0, 8), expand=c(0, 0)) +
+  scale_y_continuous("Time-dependent reproduction number", limits=c(0, 8), expand=c(0, 0)) +
   ggtitle("B") +
   theme(
     panel.grid = element_blank(),
