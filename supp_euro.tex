@@ -1,0 +1,91 @@
+\documentclass[12pt]{article}
+\usepackage[top=1in,left=1in, right = 1in, footskip=1in]{geometry}
+
+\usepackage{graphicx}
+%\usepackage{adjustbox}
+
+\newcommand{\comment}{\showcomment}
+%% \newcommand{\comment}{\nocomment}
+
+\newcommand{\showcomment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
+\newcommand{\nocomment}[3]{}
+
+\newcommand{\jd}[1]{\comment{cyan}{JD}{#1}}
+\newcommand{\swp}[1]{\comment{magenta}{SWP}{#1}}
+
+\newcommand{\eref}[1]{(Eq.~\ref{eq:#1})}
+\newcommand{\fref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\Fref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\sref}[1]{Sec.~\ref{#1}}
+\newcommand{\frange}[2]{Fig.~\ref{fig:#1}--\ref{fig:#2}}
+\newcommand{\tref}[1]{Table~\ref{tab:#1}}
+\newcommand{\tlab}[1]{\label{tab:#1}}
+\newcommand{\seminar}{SE\mbox{$^m$}I\mbox{$^n$}R}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+% \usepackage{lineno}
+% \linenumbers
+
+\usepackage[pdfencoding=auto, psdextra]{hyperref}
+
+\usepackage[numbers]{natbib}
+\usepackage{hyperref,url}
+\bibliographystyle{unsrt}
+\date{\today}
+
+\usepackage{xspace}
+\newcommand*{\ie}{i.e.\@\xspace}
+
+\usepackage{color}
+
+\newcommand{\Rx}[1]{\ensuremath{{\mathcal R}_{#1}}} 
+\newcommand{\Ro}{\Rx{0}}
+\newcommand{\RR}{\ensuremath{{\mathcal R}}}
+\newcommand{\Rhat}{\ensuremath{{\hat\RR}}}
+\newcommand{\tsub}[2]{#1_{{\textrm{\tiny #2}}}}
+
+\begin{document}
+
+\begin{flushleft}{
+	\Large
+	\textbf\newline{
+		Potential roles of social distancing in mitigating the spread of coronavirus disease 2019 (COVID-19) in South Korea -- Supplementary Materials
+	}
+}
+\newline
+\\
+Sang Woo Park\textsuperscript{1,*}
+Kaiyuan Sun\textsuperscript{2}
+C\'ecile Viboud\textsuperscript{2}
+Bryan T.\ Grenfell\textsuperscript{1,2,3}
+Jonathan Dushoff\textsuperscript{4,5,6}
+\\
+\bigskip
+\textbf{1} Department of Ecology and Evolutionary Biology, Princeton University, Princeton, NJ, USA
+\\
+\textbf{2} Fogarty International Center, National Institutes of Health, Bethesda, MD, USA
+\\
+\textbf{3} Woodrow Wilson School of Public and International Affairs, Princeton University, Princeton, NJ, USA
+\\
+\textbf{4} Department of Mathematics and Statistics, McMaster University, Hamilton, ON, Canada
+\\
+\textbf{5} M.\,G.\,DeGroote Institute for Infectious Disease Research, McMaster University, Hamilton, ON, Canada
+\\
+\textbf{6} Department of Biology, McMaster University, Hamilton, ON, Canada
+\\
+\bigskip
+
+*Corresponding author: swp2@princeton.edu\\
+This article does not necessarily represent the views of the NIH or the US government.
+\end{flushleft}
+\pagebreak
+
+\input{supp.tex}
+
+\bibliography{korea}
+
+\end{document}

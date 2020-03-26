@@ -1,3 +1,55 @@
+\documentclass[12pt]{article}
+\usepackage[top=1in,left=1in, right = 1in, footskip=1in]{geometry}
+
+\usepackage{graphicx}
+%\usepackage{adjustbox}
+
+\newcommand{\comment}{\showcomment}
+%% \newcommand{\comment}{\nocomment}
+
+\newcommand{\showcomment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
+\newcommand{\nocomment}[3]{}
+
+\newcommand{\jd}[1]{\comment{cyan}{JD}{#1}}
+\newcommand{\swp}[1]{\comment{magenta}{SWP}{#1}}
+
+\newcommand{\eref}[1]{(Eq.~\ref{eq:#1})}
+\newcommand{\fref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\Fref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\sref}[1]{Sec.~\ref{#1}}
+\newcommand{\frange}[2]{Fig.~\ref{fig:#1}--\ref{fig:#2}}
+\newcommand{\tref}[1]{Table~\ref{tab:#1}}
+\newcommand{\tlab}[1]{\label{tab:#1}}
+\newcommand{\seminar}{SE\mbox{$^m$}I\mbox{$^n$}R}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+% \usepackage{lineno}
+% \linenumbers
+
+\usepackage[pdfencoding=auto, psdextra]{hyperref}
+
+\usepackage[numbers]{natbib}
+\usepackage{hyperref,url}
+\bibliographystyle{unsrt}
+\date{\today}
+
+\usepackage{xspace}
+\newcommand*{\ie}{i.e.\@\xspace}
+
+\usepackage{color}
+
+\newcommand{\Rx}[1]{\ensuremath{{\mathcal R}_{#1}}} 
+\newcommand{\Ro}{\Rx{0}}
+\newcommand{\RR}{\ensuremath{{\mathcal R}}}
+\newcommand{\Rhat}{\ensuremath{{\hat\RR}}}
+\newcommand{\tsub}[2]{#1_{{\textrm{\tiny #2}}}}
+
+\begin{document}
+
 \begin{flushleft}{
 	\Large
 	\textbf\newline{
@@ -52,6 +104,12 @@ Data collection: SWP; conceptualization: SWP, CV; analysis: SWP; first draft: SW
 All transcribed data and original reports used in this analysis are stored in a publicly available GitHub repository: \url{https://github.com/parksw3/COVID19-Korea}.
 All code and traffic data are stored in a separate GitHub repository: \url{https://github.com/parksw3/Korea-analysis}.
 
+\section*{Funding statement}
+
+JD was supported from the Canadian Institutes of Health Research. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.
+
 \section*{Conflict of interest}
 
 None declared.
+
+\end{document}
