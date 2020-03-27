@@ -54,7 +54,7 @@
 
 \pagebreak
 
-\section{Background}
+\section{Introduction}
 
 Since its first appearance in Wuhan, China, in December 2019 \citep{pneumonia}, coronavirus disease (COVID-19) has spread internationally, including to South Korea.
 The first COVID-19 case in South Korea was confirmed on January 20, 2020, from a traveling resident of Wuhan, China \citep{kcdc}.
@@ -64,7 +64,9 @@ As of March 24, 2020, 9,037 cases were confirmed, of which 56\% were related to 
 South Korea's intensive testing using novel contact tracing techniques allowed rapid identification and isolation cases and reduction of onward transmission \citep{fergusonimpact, tracingkorea, science}.
 Here, we describe potential roles of social distancing in mitigating the spread of COVID-19 in South Korea by using metro traffic data to compare epidemics in two major cities.
 
-\section{Data description}
+\section{Materials and Methods}
+
+\subsection{Data description}
 
 We analyzed epidemiological data describing the COVID-19 outbreak in South Korea between January 20--March 16, 2020.
 Daily number of reported cases in each geographic region was transcribed from press releases by the Korea Centers for Disease Control and Prevention (KCDC) \cite{kcdc}.
@@ -94,7 +96,7 @@ Soon after the first church-related case was confirmed in Daegu on Feb 18, 2020,
 %% https://www.data.go.kr/dataset/15002503/fileData.do
 %% https://data.seoul.go.kr/dataList/OA-12914/S/1/datasetView.do
 
-\section{Trends in time-dependent reproduction number and traffic volume}
+\subsection{Time-dependent reproduction number}
 
 To estimate the time-dependent reproduction number $R_t$ (the average number of secondary cases caused by an average individual, given conditions at time $t$ \citep{fraser2007estimating}), we first estimated daily incidence of infection from the daily number of reported cases by the KCDC \citep{kcdc}.
 We adjusted the number of reported cases to account for changes in testing criteria, which occurred 4 times between January 20--March 16, 2020.
@@ -141,6 +143,8 @@ Vertical lines indicate Feb 18, 2020, when the first case was confirmed in Daegu
 }
 \label{fig:eff}
 \end{figure}
+
+\section{Results}
 
 \fref{eff} compares the reconstructed incidence (A,B) and estimates of $\mathcal R_t$ (C,D) in Daegu and Seoul.
 In Daegu, incidence peaked shortly after the first case was confirmed and then decreased (\fref{eff}A).
