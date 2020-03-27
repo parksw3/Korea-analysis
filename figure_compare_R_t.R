@@ -259,5 +259,5 @@ g1 <- ggplot(bind_rows(mutate(daegu_merge, region="Daegu"), mutate(seoul_merge, 
     legend.title = element_blank()
   )
 
-ggsave("traffic.pdf", g1, width=6, height=6)
+ggsave("traffic.pdf", g1, width=5, height=5)
 ggsave("traffic.png", g1, width=6, height=4)
