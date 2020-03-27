@@ -141,3 +141,4 @@ g4 <- ggplot(filter(R_t_all, region=="Gyeonggi-do")) +
 gtot <- arrangeGrob(g1, g3, g2, g4)
 
 ggsave("figure_R_t_all.pdf", gtot, width=8, height=6)
+ggsave("figure_R_t_all.png", gtot, width=14, height=7)

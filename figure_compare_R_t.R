@@ -243,6 +243,7 @@ g4 <- ggplot(rt_seoul) +
 gtot <- arrangeGrob(g1, g2, g3, g4, nrow=2, widths=c(1.1, 1))
 
 ggsave("figure_compare_R_t.pdf", gtot, width=8, height=8)
+ggsave("figure_compare_R_t.png", gtot, width=15, height=7)
 
 g1 <- ggplot(bind_rows(mutate(daegu_merge, region="Daegu"), mutate(seoul_merge, region="Seoul"))) +
   geom_point(aes(traffic, median, shape=region, col=region), size=3) +
@@ -254,8 +255,9 @@ g1 <- ggplot(bind_rows(mutate(daegu_merge, region="Daegu"), mutate(seoul_merge, 
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.line = element_line(),
-    legend.position = c(0.1, 0.9),
+    legend.position = c(0.12, 0.9),
     legend.title = element_blank()
   )
 
 ggsave("traffic.pdf", g1, width=6, height=6)
+ggsave("traffic.png", g1, width=6, height=4)
