@@ -74,7 +74,6 @@ g1 <- ggplot(filter(R_t_all, region=="Daegu")) +
   scale_x_date("Date") +
   scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*150, name = "Number of reported cases")) +
-  facet_wrap(~region, scale="free") +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
@@ -92,7 +91,6 @@ g2 <- ggplot(filter(R_t_all, region=="Gyeongsangbuk-do")) +
   scale_x_date("Date") +
   scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*30, name = "Number of reported cases")) +
-  facet_wrap(~region, scale="free") +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
@@ -110,7 +108,6 @@ g3 <- ggplot(filter(R_t_all, region=="Seoul")) +
   scale_x_date("Date") +
   scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*8, name = "Number of reported cases")) +
-  facet_wrap(~region, scale="free") +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
@@ -128,7 +125,6 @@ g4 <- ggplot(filter(R_t_all, region=="Gyeonggi-do")) +
   scale_x_date("Date") +
   scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*3, name = "Number of reported cases")) +
-  facet_wrap(~region, scale="free") +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
@@ -138,7 +134,12 @@ g4 <- ggplot(filter(R_t_all, region=="Gyeonggi-do")) +
     strip.background = element_blank()
   )
 
-gtot <- arrangeGrob(g1, g3, g2, g4)
+gtot <- arrangeGrob(g1 + ggtitle("Daegu"), g3 + ggtitle("Seoul"), g2 + ggtitle("Gyeongsangbuk-do"), g4 + ggtitle("Gyeonggi-do"))
 
 ggsave("figure_R_t_all.pdf", gtot, width=8, height=6)
 ggsave("figure_R_t_all.png", gtot, width=14, height=7)
+
+ggsave("AppendixFigure4A.jpg", g1, width=4, height=4, dpi=600)
+ggsave("AppendixFigure4B.jpg", g3, width=4, height=4, dpi=600)
+ggsave("AppendixFigure4C.jpg", g2, width=4, height=4, dpi=600)
+ggsave("AppendixFigure4D.jpg", g4, width=4, height=4, dpi=600)

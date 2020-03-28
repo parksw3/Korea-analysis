@@ -154,3 +154,6 @@ gtot <- arrangeGrob(g1, g2, nrow=1, widths=c(1.1, 1))
 
 ggsave("figure_compare_report.pdf", gtot, width=8, height=3.5)
 ggsave("figure_compare_report.png", gtot, width=8, height=3.5)
+
+ggsave("figure1A.jpg", g1+theme(plot.title = element_blank()), width=4, height=4, dpi=600)
+ggsave("figure1B.jpg", g2+theme(plot.title = element_blank()), width=4, height=4, dpi=600)

@@ -175,3 +175,5 @@ g2 <- ggplot(c2data) +
 gtot <- arrangeGrob(g1, g2, nrow=1)
 
 ggsave("figure_cross.pdf", gtot, width=8, height=4)
+ggsave("AppendixFigure3A.jpg", g1 + theme(plot.title = element_blank()), width=4, height=4, dpi=600)
+ggsave("AppendixFigure3B.jpg", g2 + theme(plot.title = element_blank()), width=4, height=4, dpi=600)

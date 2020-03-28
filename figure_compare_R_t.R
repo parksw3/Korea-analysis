@@ -245,6 +245,11 @@ gtot <- arrangeGrob(g1, g2, g3, g4, nrow=2, widths=c(1.1, 1))
 ggsave("figure_compare_R_t.pdf", gtot, width=8, height=8)
 ggsave("figure_compare_R_t.png", gtot, width=15, height=7)
 
+ggsave("figure2A.jpg", g1 + theme(plot.title = element_blank()), width=4, height=4, dpi=600)
+ggsave("figure2B.jpg", g2 + theme(plot.title = element_blank()), width=4, height=4, dpi=600)
+ggsave("figure2C.jpg", g3 + theme(plot.title = element_blank()), width=4, height=4, dpi=600)
+ggsave("figure2D.jpg", g4 + theme(plot.title = element_blank()), width=4, height=4, dpi=600)
+
 g1 <- ggplot(bind_rows(mutate(daegu_merge, region="Daegu"), mutate(seoul_merge, region="Seoul"))) +
   geom_point(aes(traffic, median, shape=region, col=region), size=3) +
   scale_x_continuous("(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)") +
@@ -261,3 +266,4 @@ g1 <- ggplot(bind_rows(mutate(daegu_merge, region="Daegu"), mutate(seoul_merge, 
 
 ggsave("traffic.pdf", g1, width=5, height=5)
 ggsave("traffic.png", g1, width=6, height=4)
+ggsave("AppendixFigure2.jpg", g1, width=6, height=4, dpi=600)

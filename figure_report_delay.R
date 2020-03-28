@@ -240,4 +240,9 @@ gtot <- arrangeGrob(g1, g2, g3, g4, nrow=2)
 
 ggsave("figure_report_delay.pdf", gtot, width=10, height=6)
 
+ggsave("AppendixFigure1A.jpg", g1+theme(plot.title=element_blank()), width=4, height=4, dpi=600)
+ggsave("AppendixFigure1B.jpg", g2+theme(plot.title=element_blank()), width=4, height=4, dpi=600)
+ggsave("AppendixFigure1C.jpg", g3+theme(plot.title=element_blank()), width=4, height=4, dpi=600)
+ggsave("AppendixFigure1D.jpg", g4+theme(plot.title=element_blank()), width=4, height=4, dpi=600)
+
 save("estmean", file="pred_report_delay.rda")

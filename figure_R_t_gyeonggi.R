@@ -114,3 +114,6 @@ g2 <- ggplot(rt_all) +
 gtot <- arrangeGrob(g1, g2, nrow=2)
 
 ggsave("figure_R_t_gyeonggi.pdf", gtot, width=6, height=5)
+
+ggsave("AppendixFigure8A.jpg", g1 + theme(plot.title = element_blank()), width=6,height=3, dpi=600)
+ggsave("AppendixFigure8B.jpg", g2 + theme(plot.title = element_blank()), width=6,height=3, dpi=600)

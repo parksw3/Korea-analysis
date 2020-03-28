@@ -117,3 +117,6 @@ g2 <- ggplot(rt_all) +
 gseoul <- arrangeGrob(g1, g2, nrow=1, widths=c(1.1, 1))
 
 ggsave("figure_R_t_seoul_linelist.pdf", gseoul, width=8, height=5)
+
+ggsave("AppendixFigure9A.jpg", g1 + theme(plot.title = element_blank()), width=4,height=4, dpi=600)
+ggsave("AppendixFigure9B.jpg", g2 + theme(plot.title = element_blank()), width=4,height=4, dpi=600)
