@@ -134,10 +134,11 @@ g4 <- ggplot(filter(R_t_all, region=="Gyeonggi-do")) +
     strip.background = element_blank()
   )
 
-gtot <- arrangeGrob(g1 + ggtitle("Daegu"), g3 + ggtitle("Seoul"), g2 + ggtitle("Gyeongsangbuk-do"), g4 + ggtitle("Gyeonggi-do"))
+gtot <- arrangeGrob(g1 + ggtitle("A. Daegu"), g3 + ggtitle("B. Seoul"), g2 + ggtitle("C. Gyeongsangbuk-do"), g4 + ggtitle("D. Gyeonggi-do"))
 
 ggsave("figure_R_t_all.pdf", gtot, width=8, height=6)
 ggsave("figure_R_t_all.png", gtot, width=14, height=7)
+ggsave("AppendixFigure4.jpg", gtot, width=8, height=6, dpi=600)
 
 ggsave("AppendixFigure4A.jpg", g1, width=4, height=4, dpi=600)
 ggsave("AppendixFigure4B.jpg", g3, width=4, height=4, dpi=600)
