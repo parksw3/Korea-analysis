@@ -1,0 +1,81 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{color}
+
+\usepackage{xspace}
+
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+
+\usepackage[pdfencoding=auto, psdextra]{hyperref}
+
+\newcommand{\rR}{\mbox{$r$--$\cal R$}}
+\newcommand{\RR}{\ensuremath{{\cal R}}}
+\newcommand{\RRhat}{\ensuremath{{\hat \cal R}}}
+\newcommand{\Rx}[1]{\ensuremath{{\cal R}_{#1}}} 
+\newcommand{\Ro}{\ensuremath{{\mathcal R}_{0}}\xspace}
+\newcommand{\Rpool}{\ensuremath{{\mathcal R}_{\textrm{\tiny{pool}}}}\xspace}
+\newcommand{\Reff}{\Rx{\mathit{eff}}}
+\newcommand{\Tc}{\ensuremath{C}}
+
+\newcommand{\rev}{\subsection*}
+\newcommand{\revtext}{\textsf}
+\setlength{\parskip}{\baselineskip}
+\setlength{\parindent}{0em}
+
+\newcommand{\comment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
+\newcommand{\jd}[1]{\comment{cyan}{JD}{#1}}
+\newcommand{\swp}[1]{\comment{magenta}{SWP}{#1}}
+\newcommand{\dc}[1]{\comment{blue}{DC}{#1}}
+\newcommand{\jsw}[1]{\comment{green}{JSW}{#1}}
+\newcommand{\hotcomment}[1]{\comment{red}{HOT}{#1}}
+
+\begin{document}
+
+\noindent Dear Editor:
+
+Thank you for the chance to revise and resubmit our manuscript. 
+We have made minor revisions to our manuscript to address reviewer's comments and to meet the word limit.
+Below please find our responses to reviewers.
+
+\rev{Reviewer \#1}
+
+\revtext{The manuscript by Park et al. provided a measure of social distancing in South Korea and illustrated how it is connected with the reduced transmission. The analyses were robust and supported by relevant sensitivity analyses, considering change in testing criteria. The study illustrated clearly how traffic data can be used as a measure social distancing.}
+
+\revtext{Comments to the authors}
+
+\revtext{1.	Please clarify if Rt measured transmission before or after time t in the Figure caption. How would that affect interpretation of the results?}
+
+We quantify the instantaneous reproduction number, which measures transmission at time $t$. This is the Rt that one should use to quantify real-time changes in transmission. Therefore, the use of this Rt does not affect interpretation of the results. We have added the following text in the Figure caption:
+
+``The instantaneous reproduction number $\mathcal R_t$ reflects transmission dynamics at time $t$''
+
+\revtext{2.	Figure 2C. Could the authors explain why Rt started to decrease even 1 week before confirmation of the first COVID-19 case in Daegu? }
+
+This is likely due to our resampling method, which is known to over-smooth the incidence curve and estimates of $\mathcal R_t$. Nonetheless, it has been shown to capture the qualitative changes in $\mathcal R_t$. We have added the following text to acknowledge this limitation with appropriate citations:
+
+`` The initial decrease in $\mathcal R_t$ is likely to be caused by our resampling method for infection times for each reported case, which over-smoothes the incidence curve and $\mathcal R_t$ estimates (7).''
+
+``Finally, the method of resampling infection time over-smoothes $\mathcal R_t$ estimates, but still captures qualitatively changes in $\mathcal R_t$ (7).''
+
+\revtext{3.	L79, it may be helpful to describe in the introduction if there were any official recommendations concerning social distancing or traffic}
+
+We have added the following text to the introduction. We were not able to find any official recommendations concerning traffic.
+
+``Several measures were implemented to prevent the spread of COVID-19. On February 20,
+the Daegu Metropolitan City Government recommended refraining from going outside and
+wearing masks in everyday life (2). On February 23, the national alert level was raised to the
+highest level (1) and the beginning of school semesters were delayed (3). Intensive testing and
+contact tracing efforts further allowed rapid identification and isolation cases and reduction of
+onward transmission (4).''
+
+\rev{EID Editorial Board Comments:}
+
+\revtext{Even though the limits for dispatch articles in EID are 1200 words in length, 15 references and 2 tables and figures, note that EID does allow appendices to accompany dispatch articles, so as to accommodate supplemental figures, tables, and results.}
+
+\revtext{Do not embed figures in MS Word document. Resubmit supplemental figures as separate JPEG, PDF, PPT or TIF files at 300 DPI or greater resolution. For supplemental figures 1, 3, 4, and 9, resubmit panels as separate files.}
+
+We have revised the manuscript to meet the word limits and style guidelines.
+
+\end{document}
