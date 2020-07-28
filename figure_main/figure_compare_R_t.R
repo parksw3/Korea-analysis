@@ -202,7 +202,7 @@ g3 <- ggplot(rt_daegu) +
   scale_color_manual(values=c(1, 2, 4)) +
   scale_fill_manual(values=c(1, 2, 4)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
-  scale_y_continuous("Time-dependent reproduction number", limits=c(0, 8), expand=c(0, 0),
+  scale_y_continuous("Instantaneous reproduction number", limits=c(0, 8), expand=c(0, 0),
                      sec.axis = sec_axis(~ .*1/6, name = "(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)")) +
   theme(
     panel.grid = element_blank(),
@@ -225,7 +225,7 @@ g4 <- ggplot(rt_seoul) +
   geom_hline(yintercept=1, lty=2) + 
   geom_vline(xintercept=as.Date("2020-02-18"), lty=2) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-20", "2020-03-16"))+c(0,0.5)) +
-  scale_y_continuous("Time-dependent reproduction number", limits=c(0, 8), expand=c(0, 0),
+  scale_y_continuous("Instantaneous reproduction number", limits=c(0, 8), expand=c(0, 0),
                      sec.axis = sec_axis(~ ./6, name = "(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)")) +
   theme(
     panel.grid = element_blank(),
@@ -247,14 +247,14 @@ ggsave("EID-20-1099-figure2D.jpg", g4 + theme(plot.title = element_blank()), wid
 g5 <- ggplot(bind_rows(mutate(daegu_merge, region="Daegu"), mutate(seoul_merge, region="Seoul"))) +
   geom_point(aes(traffic, median, shape=region, col=region), size=3) +
   scale_x_continuous("(Daily traffic, 2020)/(Mean daily traffic, 2017 - 2019)") +
-  scale_y_continuous("Time-dependent reproduction number") +
+  scale_y_continuous("Instantaneous reproduction number") +
   scale_shape_manual(values=c(21, 22)) +
   scale_color_manual(values=c("blue", "black")) +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.line = element_line(),
-    legend.position = c(0.12, 0.9),
+    legend.position = c(0.13, 0.9),
     legend.title = element_blank()
   )
 

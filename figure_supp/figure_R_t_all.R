@@ -1,12 +1,13 @@
 library(dplyr)
 library(tidyr)
-library(ggplot2); theme_set(theme_bw())
-source("wquant.R")
+library(ggplot2); theme_set(theme_bw(base_size = 12,
+                                     base_family = "Times"))
+source("../R/wquant.R")
 
-load("R_t_gyeongbuk_censor_detect.rda")
-load("R_t_daegu_censor_detect.rda")
-load("R_t_seoul_censor_detect.rda")
-load("R_t_gyeonggi_censor_detect.rda")
+load("../analysis_R_t/R_t_gyeongbuk_censor_detect.rda")
+load("../analysis_R_t/R_t_daegu_censor_detect.rda")
+load("../analysis_R_t/R_t_seoul_censor_detect.rda")
+load("../analysis_R_t/R_t_gyeonggi_censor_detect.rda")
 
 R0prior <- function(x) dgamma(x, shape=(2.6/2)^2, rate=(2.6/2)^2/2.6)
 
@@ -44,7 +45,7 @@ R_t_all <- bind_rows(
     region=factor(region, levels=c("Daegu", "Seoul", "Gyeongsangbuk-do", "Gyeonggi-do"))
   )
 
-geo <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3) %>%
+geo <- read_xlsx("../data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3) %>%
   mutate(
     date_report=as.Date(date_report)
   ) 
@@ -67,9 +68,10 @@ geo_all <- geo %>% group_by(date_report) %>%
   )
  
 g1 <- ggplot(filter(R_t_all, region=="Daegu")) +
+  annotate("text", x=as.Date("2020-01-21"), y=Inf, label="Daegu", hjust=0, vjust=1) +
   geom_bar(data=filter(geo_all, region=="Daegu"), aes(date_report, value/150), stat="identity", alpha=0.5) +
   geom_hline(yintercept=1, lty=2) +
-  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
+  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.15) +
   geom_line(aes(date, median)) +
   scale_x_date("Date") +
   scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
@@ -84,9 +86,10 @@ g1 <- ggplot(filter(R_t_all, region=="Daegu")) +
   )
 
 g2 <- ggplot(filter(R_t_all, region=="Gyeongsangbuk-do")) +
+  annotate("text", x=as.Date("2020-01-21"), y=Inf, label="Gyeongsangbuk-do", hjust=0, vjust=1) +
   geom_bar(data=filter(geo_all, region=="Gyeongsangbuk-do"), aes(date_report, value/30), stat="identity", alpha=0.5) +
   geom_hline(yintercept=1, lty=2) +
-  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
+  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.15) +
   geom_line(aes(date, median)) +
   scale_x_date("Date") +
   scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
@@ -101,9 +104,10 @@ g2 <- ggplot(filter(R_t_all, region=="Gyeongsangbuk-do")) +
   )
 
 g3 <- ggplot(filter(R_t_all, region=="Seoul")) +
+  annotate("text", x=as.Date("2020-01-21"), y=Inf, label="Seoul", hjust=0, vjust=1) +
   geom_bar(data=filter(geo_all, region=="Seoul"), aes(date_report, value/8), stat="identity", alpha=0.5) +
   geom_hline(yintercept=1, lty=2) +
-  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
+  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.15) +
   geom_line(aes(date, median)) +
   scale_x_date("Date") +
   scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
@@ -118,9 +122,10 @@ g3 <- ggplot(filter(R_t_all, region=="Seoul")) +
   )
 
 g4 <- ggplot(filter(R_t_all, region=="Gyeonggi-do")) +
+  annotate("text", x=as.Date("2020-01-21"), y=Inf, label="Gyeonggi-do", hjust=0, vjust=1) +
   geom_bar(data=filter(geo_all, region=="Gyeonggi-do"), aes(date_report, value/3), stat="identity", alpha=0.5) +
   geom_hline(yintercept=1, lty=2) +
-  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.3) +
+  geom_ribbon(aes(date, ymin=lwr, ymax=upr), alpha=0.15) +
   geom_line(aes(date, median)) +
   scale_x_date("Date") +
   scale_y_continuous("Time-dependent reproduction number", limits=c(0, NA), expand=c(0, 0),
@@ -134,13 +139,7 @@ g4 <- ggplot(filter(R_t_all, region=="Gyeonggi-do")) +
     strip.background = element_blank()
   )
 
-gtot <- arrangeGrob(g1 + ggtitle("A. Daegu"), g3 + ggtitle("B. Seoul"), g2 + ggtitle("C. Gyeongsangbuk-do"), g4 + ggtitle("D. Gyeonggi-do"))
-
-ggsave("figure_R_t_all.pdf", gtot, width=8, height=6)
-ggsave("figure_R_t_all.png", gtot, width=14, height=7)
-ggsave("AppendixFigure4.jpg", gtot, width=8, height=6, dpi=600)
-
-ggsave("AppendixFigure4A.jpg", g1, width=4, height=4, dpi=600)
-ggsave("AppendixFigure4B.jpg", g3, width=4, height=4, dpi=600)
-ggsave("AppendixFigure4C.jpg", g2, width=4, height=4, dpi=600)
-ggsave("AppendixFigure4D.jpg", g4, width=4, height=4, dpi=600)
+ggsave("EID-20-1099-AppendixFigure4A.jpg", g1, width=4, height=4, dpi=600)
+ggsave("EID-20-1099-AppendixFigure4B.jpg", g3, width=4, height=4, dpi=600)
+ggsave("EID-20-1099-AppendixFigure4C.jpg", g2, width=4, height=4, dpi=600)
+ggsave("EID-20-1099-AppendixFigure4D.jpg", g4, width=4, height=4, dpi=600)

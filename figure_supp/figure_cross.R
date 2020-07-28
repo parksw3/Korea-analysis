@@ -1,19 +1,20 @@
-library(ggplot2); theme_set(theme_bw())
+library(ggplot2); theme_set(theme_bw(base_size = 12,
+                                     base_family = "Times"))
 library(gridExtra)
 library(lubridate)
 library(dplyr)
 library(tidyr)
 library(readxl)
-source("wquant.R")
+source("../R/wquant.R")
 
 R0prior <- function(x) dgamma(x, shape=(2.6/2)^2, rate=(2.6/2)^2/2.6)
 
-load("R_t_daegu_censor_detect.rda")
-load("R_t_seoul_censor_detect.rda")
-load("traffic_daegu.rda")
-load("traffic_seoul.rda")
+load("../analysis_R_t/R_t_daegu_censor_detect.rda")
+load("../analysis_R_t/R_t_seoul_censor_detect.rda")
+load("../data_processed/traffic_daegu.rda")
+load("../data_processed/traffic_seoul.rda")
 
-geo <- read_xlsx("data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3) %>%
+geo <- read_xlsx("../data/COVID19-Korea-2020-03-16.xlsx", na="NA", sheet=3) %>%
   mutate(
     date_report=as.Date(date_report)
   ) 
@@ -37,7 +38,7 @@ traffic_daegu1 <- dplyr::select(ungroup(filter(traffic_daegu,year==2017)), -월,
     wday=wday(date)
   ) %>%
   filter(
-    date >= as.Date("2017-01-20")+3, date <= as.Date("2017-03-01")+3
+    date >= as.Date("2017-01-20")+3, date <= as.Date("2017-03-17")+3
   )
 
 traffic_daegu2 <- dplyr::select(ungroup(filter(traffic_daegu,year==2018)), -월, -일) %>%
@@ -45,7 +46,7 @@ traffic_daegu2 <- dplyr::select(ungroup(filter(traffic_daegu,year==2018)), -월,
     wday=wday(date)
   ) %>%
   filter(
-    date >= as.Date("2018-01-20")+2, date <= as.Date("2018-03-01")+2
+    date >= as.Date("2018-01-20")+2, date <= as.Date("2018-03-17")+2
   )
 
 traffic_daegu3 <- dplyr::select(ungroup(filter(traffic_daegu,year==2019)), -월, -일) %>%
@@ -53,7 +54,7 @@ traffic_daegu3 <- dplyr::select(ungroup(filter(traffic_daegu,year==2019)), -월,
     wday=wday(date)
   ) %>%
   filter(
-    date >= as.Date("2019-01-20")+1, date <= as.Date("2019-03-01")+1
+    date >= as.Date("2019-01-20")+1, date <= as.Date("2019-03-17")+1
   )
 
 traffic_daegu4 <- dplyr::select(ungroup(filter(traffic_daegu,year==2020)), -월, -일) %>%
@@ -61,7 +62,7 @@ traffic_daegu4 <- dplyr::select(ungroup(filter(traffic_daegu,year==2020)), -월,
     wday=wday(date)
   ) %>%
   filter(
-    date >= as.Date("2020-01-20"), date <= as.Date("2020-02-29")
+    date >= as.Date("2020-01-20"), date <= as.Date("2020-03-16")
   )
 
 rt_daegu <- R_t_daegu_censor_detect %>%
@@ -76,7 +77,7 @@ rt_daegu <- R_t_daegu_censor_detect %>%
   )
 
 daegu_traffic <- data.frame(
-  date=seq.Date(as.Date("2020-01-20"), as.Date("2020-02-29"), 1),
+  date=seq.Date(as.Date("2020-01-20"), as.Date("2020-03-16"), 1),
   traffic=traffic_daegu4$total/((traffic_daegu1$total + traffic_daegu2$total + traffic_daegu3$total)/3)
 )
 
@@ -85,7 +86,7 @@ traffic_seoul1 <- ungroup(filter(traffic_seoul,year==2017)) %>%
     wday=wday(date)
   ) %>%
   filter(
-    date >= as.Date("2017-01-20")+3, date <= as.Date("2017-03-11")+3
+    date >= as.Date("2017-01-20")+3, date <= as.Date("2017-03-17")+3
   )
 
 traffic_seoul2 <- ungroup(filter(traffic_seoul,year==2018)) %>%
@@ -93,7 +94,7 @@ traffic_seoul2 <- ungroup(filter(traffic_seoul,year==2018)) %>%
     wday=wday(date)
   ) %>%
   filter(
-    date >= as.Date("2018-01-20")+2, date <= as.Date("2018-03-11")+2
+    date >= as.Date("2018-01-20")+2, date <= as.Date("2018-03-17")+2
   )
 
 traffic_seoul3 <- ungroup(filter(traffic_seoul,year==2019)) %>%
@@ -101,7 +102,7 @@ traffic_seoul3 <- ungroup(filter(traffic_seoul,year==2019)) %>%
     wday=wday(date)
   ) %>%
   filter(
-    date >= as.Date("2019-01-20")+1, date <= as.Date("2019-03-11")+1
+    date >= as.Date("2019-01-20")+1, date <= as.Date("2019-03-17")+1
   )
 
 traffic_seoul4 <- ungroup(filter(traffic_seoul,year==2020)) %>%
@@ -109,7 +110,7 @@ traffic_seoul4 <- ungroup(filter(traffic_seoul,year==2020)) %>%
     wday=wday(date)
   ) %>%
   filter(
-    date >= as.Date("2020-01-20"), date <= as.Date("2020-03-10")
+    date >= as.Date("2020-01-20"), date <= as.Date("2020-03-16")
   )
 
 rt_seoul <- R_t_seoul_censor_detect %>%
@@ -124,18 +125,20 @@ rt_seoul <- R_t_seoul_censor_detect %>%
   )
 
 seoul_traffic <- data.frame(
-  date=seq.Date(as.Date("2020-01-20"), as.Date("2020-03-10"), 1),
+  date=seq.Date(as.Date("2020-01-20"), as.Date("2020-03-16"), 1),
   traffic=traffic_seoul4$total/((traffic_seoul1$total + traffic_seoul2$total + traffic_seoul3$total)/3)
 )
 
+
+
 c1 <- ccf(
-  filter(daegu_traffic, date >= as.Date("2020-02-02"))$traffic,
-  filter(rt_daegu, date <= as.Date("2020-02-29"))$median
+  merge(daegu_traffic, rt_daegu)$traffic,
+  merge(daegu_traffic, rt_daegu)$median
 )
 
 c2 <- ccf(
-  filter(seoul_traffic, date >= as.Date("2020-02-02"))$traffic,
-  filter(rt_seoul, date <= as.Date("2020-02-29"))$median
+  merge(seoul_traffic, rt_seoul)$traffic,
+  merge(seoul_traffic, rt_seoul)$median
 )
 
 c1data <- data.frame(
@@ -149,10 +152,12 @@ c2data <- data.frame(
 )
 
 g1 <- ggplot(c1data) +
-  geom_bar(aes(lag, ccf), stat="identity", fill=NA, col=1) +
+  annotate("text", x=-Inf, y=Inf, label="Daegu", hjust=0, vjust=1) +
+  geom_point(aes(lag, ccf), stat="identity", fill=NA, col=1) +
+  geom_segment(aes(x=lag, xend=lag, y=0, yend=ccf), stat="identity", fill=NA, col=1) +
+  geom_hline(yintercept=0) +
   xlab("Lag (days)") +
-  ylab("Cross correlation") +
-  ggtitle("A. Daegu") +
+  scale_y_continuous("Cross correlation", limits=c(-1, 1)) +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
@@ -161,10 +166,12 @@ g1 <- ggplot(c1data) +
   )
 
 g2 <- ggplot(c2data) +
-  geom_bar(aes(lag, ccf), stat="identity", fill=NA, col=1) +
+  annotate("text", x=-Inf, y=Inf, label="Seoul", hjust=0, vjust=1) +
+  geom_point(aes(lag, ccf), stat="identity", fill=NA, col=1) +
+  geom_segment(aes(x=lag, xend=lag, y=0, yend=ccf), stat="identity", fill=NA, col=1) +
+  geom_hline(yintercept=0) +
   xlab("Lag (days)") +
-  ylab("Cross correlation") +
-  ggtitle("B. Seoul") +
+  scale_y_continuous("Cross correlation", limits=c(-1, 1)) +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
@@ -172,9 +179,5 @@ g2 <- ggplot(c2data) +
     legend.position = c(0.87, 0.83)
   )
 
-gtot <- arrangeGrob(g1, g2, nrow=1)
-
-ggsave("figure_cross.pdf", gtot, width=8, height=4)
-ggsave("AppendixFigure3.jpg", gtot, width=8, height=4)
-ggsave("AppendixFigure3A.jpg", g1 + theme(plot.title = element_blank()), width=4, height=4, dpi=600)
-ggsave("AppendixFigure3B.jpg", g2 + theme(plot.title = element_blank()), width=4, height=4, dpi=600)
+ggsave("EID-20-1099-AppendixFigure3A.jpg", g1 + theme(plot.title = element_blank()), width=4, height=4, dpi=600)
+ggsave("EID-20-1099-AppendixFigure3B.jpg", g2 + theme(plot.title = element_blank()), width=4, height=4, dpi=600)
