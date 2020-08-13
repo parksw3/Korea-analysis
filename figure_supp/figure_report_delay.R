@@ -157,13 +157,13 @@ covid_test2 <- covid_test %>%
   )
 
 g1 <- ggplot(covid_test2) +
-  geom_bar(aes(as.Date(date_report), diff), stat="identity", alpha=0.5, col="black") +
+  geom_bar(aes(as.Date(date_report), diff), stat="identity", alpha=0.3, col="black") +
   geom_vline(xintercept=as.Date("2020-01-28"), lty=2) +
   geom_vline(xintercept=as.Date("2020-02-07"), lty=2) +
   geom_vline(xintercept=as.Date("2020-02-20"), lty=2) +
   geom_vline(xintercept=as.Date("2020-03-02"), lty=2) +
   scale_y_continuous("Number of tests completed on each day", limit=c(0, 21000), expand=c(0, 0)) +
-  scale_x_date("Date", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-16"))+c(0, 0.5)) +
+  scale_x_date("Date", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-17"))+c(0, 0.5)) +
   coord_cartesian(clip = 'off') +
   theme(
     panel.grid = element_blank(),
@@ -173,13 +173,13 @@ g1 <- ggplot(covid_test2) +
   )
 
 g2 <- ggplot(covid_test2) +
-  geom_bar(aes(as.Date(date_report), prop), stat="identity", alpha=0.5, col="black") +
+  geom_bar(aes(as.Date(date_report), prop), stat="identity", alpha=0.3, col="black") +
   geom_vline(xintercept=as.Date("2020-01-28"), lty=2) +
   geom_vline(xintercept=as.Date("2020-02-07"), lty=2) +
   geom_vline(xintercept=as.Date("2020-02-20"), lty=2) +
   geom_vline(xintercept=as.Date("2020-03-02"), lty=2) +
   scale_y_continuous("Proportion of positive cases on each day", limit=c(0, 0.3), expand=c(0, 0)) +
-  scale_x_date("Date", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-16"))+c(0, 0.5)) +
+  scale_x_date("Date", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-17"))+c(0, 0.5)) +
   coord_cartesian(clip = 'off') +
   theme(
     panel.grid = element_blank(),
@@ -201,7 +201,7 @@ g3 <- ggplot(covid_delay3) +
   # geom_vline(xintercept=as.Date("2020-01-19"), col="red", lwd=2) +
   scale_size_area("Number of samples", guide=FALSE, max_size=2) +
   scale_y_continuous("(Backward) symptom onset to confirmation (days)", limit=c(0, 21), expand=c(0, 0)) +
-  scale_x_date("Date of symptom onset", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-16"))+c(0, 0.5)) +
+  scale_x_date("Date of symptom onset", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-17"))+c(0, 0.5)) +
   coord_cartesian(clip = 'off') +
   theme(
     panel.grid = element_blank(),
@@ -222,7 +222,7 @@ g4 <- ggplot(covid_delay) +
   # geom_vline(xintercept=as.Date("2020-01-19"), col="red", lwd=2) +
   scale_size_area("Number of samples", guide=FALSE, max_size=2) +
   scale_y_continuous("(Forward) symptom onset to confirmation (days)", limit=c(0, 21), expand=c(0, 0)) +
-  scale_x_date("Date of symptom onset", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-16"))+c(0, 0.5)) +
+  scale_x_date("Date of symptom onset", expand=c(0, 0), limits=c(as.Date("2020-01-20"), as.Date("2020-03-17"))+c(0, 0.5)) +
   coord_cartesian(clip = 'off') +
   theme(
     panel.grid = element_blank(),

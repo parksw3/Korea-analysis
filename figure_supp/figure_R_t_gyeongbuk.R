@@ -76,7 +76,6 @@ reconstruct_case_all <- bind_rows(reconstruct_case_detect, reconstruct_case_raw)
 
 g1 <- ggplot(geo) +
   geom_bar(aes(as.Date(date_report)-0.5, `Gyeongsangbuk-do`), stat="identity", alpha=0.5) +
-  geom_vline(xintercept=as.Date("2020-03-10"), lty=2) +
   geom_ribbon(data=reconstruct_case_all, aes(date, ymin=lwr, ymax=upr, col=group, fill=group, lty=group), alpha=0.3) +
   geom_line(data=reconstruct_case_all, aes(date, median, col=group, lty=group)) +
   scale_color_manual(values=c(2, 1)) +
@@ -97,11 +96,10 @@ g2 <- ggplot(rt_all) +
   geom_ribbon(aes(date, ymin=lwr, ymax=upr, col=group, fill=group), alpha=0.3) +
   geom_line(aes(date, median, col=group, lty=group)) +
   geom_hline(yintercept=1, lty=2) + 
-  geom_vline(xintercept=as.Date("2020-03-10"), lty=2) +
   scale_color_manual(values=c(2, 1)) +
   scale_fill_manual(values=c(2, 1)) +
   scale_x_date("Date", expand=c(0, 0), limits=as.Date(c("2020-01-19", "2020-03-14"))) +
-  scale_y_continuous("Time-dependent reproduction number", limits=c(0, 7), expand=c(0, 0),
+  scale_y_continuous("Instantaneous reproduction number", limits=c(0, 7), expand=c(0, 0),
                      breaks=c(0, 2, 4, 6)) +
   theme(
     panel.grid = element_blank(),
